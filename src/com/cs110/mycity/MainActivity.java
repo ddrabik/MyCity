@@ -116,8 +116,8 @@ public class MainActivity extends Activity {
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 		
-		mEmail = "cse110winter2013@gmail.com";
-		mPassword = "billgriswold";
+//		mEmail = "cse110winter2013@gmail.com";
+//		mPassword = "billgriswold";
 			
 
 		boolean cancel = false;
@@ -222,6 +222,7 @@ public class MainActivity extends Activity {
 			         } catch (XMPPException ex) {
 			             Log.e("XMPPChatDemoActivity",  "[SettingsDialog] Failed to connect to "+ connection.getHost());
 			             Log.e("XMPPChatDemoActivity", ex.toString());
+			             return false;
 			         }
 			          try {
 			            connection.login(mEmail, mPassword);
@@ -231,6 +232,7 @@ public class MainActivity extends Activity {
 			          } catch (XMPPException ex) {
 			              Log.e("XMPPChatDemoActivity", "Failed to log in as "+ mEmail);
 			              Log.e("XMPPChatDemoActivity", ex.toString());
+			              return false;
 			          }
 
 				// Simulate network access.
