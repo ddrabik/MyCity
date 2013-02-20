@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical" >
+
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:minWidth="70dp"
+      android:text="Chat With"
+      android:textStyle="bold" />
+
+    <EditText
+      android:id="@+id/toET"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:hint="Add Recipient"
+      android:minWidth="250dp"
+      android:scrollHorizontally="true"
+      android:singleLine="true"
+      android:textSize="16sp" />
+  </LinearLayout>
+
+  <ListView
+    android:id="@android:id/list"
+    android:layout_width="match_parent"
+    android:layout_height="0dip"
+    android:layout_weight="1"
+    android:scrollbars="horizontal" />
+
+  <LinearLayout
+    android:id="@+id/linearLayout2"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="horizontal" >
+    
+  </LinearLayout>
+</LinearLayout>
