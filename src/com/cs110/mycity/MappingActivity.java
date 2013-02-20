@@ -48,12 +48,15 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	
 	public void getLastLocation(){
 	    String provider = getBestProvider();
-	    currentLocation = locationManager.getLastKnownLocation(provider);
-	    if(currentLocation != null){
-	        setCurrentLocation(currentLocation);
+	    if(provider != null) {
+	    	currentLocation = locationManager.getLastKnownLocation(provider);
+	    } else {
+	    	Toast.makeText(this, "Please enable your location",  Toast.LENGTH_LONG).show();
 	    }
-	    else
-	    {
+	    
+	    if(currentLocation != null) {
+	        setCurrentLocation(currentLocation);
+	    } else {
 	        Toast.makeText(this, "Location not yet acquired", Toast.LENGTH_LONG).show();
 	    }
 	}
@@ -107,7 +110,12 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	@Override
 	protected void onResume() {
 	    super.onResume();
-	    locationManager.requestLocationUpdates(getBestProvider(), 1000, 1, this);
+	    String provider = getBestProvider();
+	    if(provider == null) {
+	    	Toast.makeText(this, "Please enable your location",  Toast.LENGTH_LONG).show();
+	    } else {
+	    	locationManager.requestLocationUpdates(provider, 1000, 1, this);
+	    }
 	}
 	@Override
 	protected void onPause() {
