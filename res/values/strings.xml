@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">xmppchat</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">MyCity</string>
     <string name="menu_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="edit_text2">Username</string>
+    <string name="edit_text1">Password</string>
+    <string name="button1">Login</string>
 
-    
-    
-    
 </resources>

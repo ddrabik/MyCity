@@ -10,8 +10,6 @@ import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.packet.Presence;
 
-import com.demo.xmppchat.R;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;

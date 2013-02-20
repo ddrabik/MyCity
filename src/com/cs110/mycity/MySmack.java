@@ -7,9 +7,6 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence;
 
-
-//import android.provider.ContactsContract.Presence;
-
 import android.util.Log;
 
 /****

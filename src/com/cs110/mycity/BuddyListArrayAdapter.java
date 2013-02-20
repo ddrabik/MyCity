@@ -2,8 +2,6 @@ package com.cs110.mycity;
 
 import java.util.ArrayList;
 
-import com.demo.xmppchat.R;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;

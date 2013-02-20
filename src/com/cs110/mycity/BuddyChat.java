@@ -10,15 +10,11 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.util.StringUtils;
 
-import com.demo.xmppchat.R;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,7 +26,7 @@ import android.widget.TextView;
 public class BuddyChat extends Activity {
  
 	  protected static final String TAG = "TAAAAAG";
-	private XMPPConnection connection;
+	  private XMPPConnection connection;
 	  private ArrayList<String> messages = new ArrayList<String>();
 	  private Handler mHandler = new Handler();
 
