@@ -13,6 +13,7 @@ import org.jivesoftware.smack.packet.Presence;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -21,7 +22,7 @@ import android.widget.ListView;
 public class BuddyList extends ListActivity {
 
 
-	ArrayList<String> listItems = new ArrayList<String>();
+	ArrayList<String> userList = new ArrayList<String>();
 	BuddyListArrayAdapter adapter;
 
 	@Override
@@ -33,7 +34,7 @@ public class BuddyList extends ListActivity {
 
 		XMPPConnection connection = XMPPLogic.getInstance().getConnection();
 
-		adapter = new BuddyListArrayAdapter(this, listItems);
+		adapter = new BuddyListArrayAdapter(this, userList);
 		ListView lv = getListView();
 
 		// assign adapter to listview
@@ -46,7 +47,7 @@ public class BuddyList extends ListActivity {
 				Intent i = new Intent(view.getContext(), BuddyChat.class);
 				
 				
-				i.putExtra("SELECTED_BUDDY", listItems.get(position).substring(1));
+				i.putExtra("SELECTED_BUDDY", userList.get(position).substring(1));
 				startActivity(i);
 			
 			
@@ -62,45 +63,35 @@ public class BuddyList extends ListActivity {
 		Roster roster = connection.getRoster();
 		Collection<RosterEntry> entries = roster.getEntries();
 		for (RosterEntry entry : entries) {
-			String str = new String();
+			String user = new String();
 			
 			// get the Presence of the user
 			Presence entryPresence = roster.getPresence(entry.getUser());
 			Presence.Type type = entryPresence.getType();
 			if (type == Presence.Type.available)
-				str = "A";
+				user = "A";
 			else {
-				str = "U";
+				user = "U";
 			}
 			
-			if( entry.getName() != null ) {
-				str += entry.getName().toLowerCase(Locale.US);
-			} else {
-				str += entry.getUser();
-			}  
+			user += entry.getUser();  
+			userList.add(user);
+
+
+//						   Log.d("XMPPChatDemoActivity",  "--------------------------------------");
+//						   Log.d("XMPPChatDemoActivity", "RosterEntry " + entry);
+//						   Log.d("XMPPChatDemoActivity", "User: " + entry.getUser());
+//						   Log.d("XMPPChatDemoActivity", "Name: " + entry.getName());
+//						   Log.d("XMPPChatDemoActivity", "Status: " + entry.getStatus());
+//						   Log.d("XMPPChatDemoActivity", "Type: " + entry.getType());
+//						
+
+						
 			
-			listItems.add(str);
-
-
-			//			   Log.d("XMPPChatDemoActivity",  "--------------------------------------");
-			//			   Log.d("XMPPChatDemoActivity", "RosterEntry " + entry);
-			//			   Log.d("XMPPChatDemoActivity", "User: " + entry.getUser());
-			//			   Log.d("XMPPChatDemoActivity", "Name: " + entry.getName());
-			//			   Log.d("XMPPChatDemoActivity", "Status: " + entry.getStatus());
-			//			   Log.d("XMPPChatDemoActivity", "Type: " + entry.getType());
-			//			   Presence entryPresence = roster.getPresence(entry.getUser());
-			//			
-			//			   Log.d("XMPPChatDemoActivity", "Presence Status: "+ entryPresence.getStatus());
-			//			   Log.d("XMPPChatDemoActivity", "Presence Type: " + entryPresence.getType());
-			//			
-			//			   Presence.Type type = entryPresence.getType();
-			//			   if (type == Presence.Type.available)
-			//			 	  Log.d("XMPPChatDemoActivity", "Presence AVIALABLE");
-			//			   Log.d("XMPPChatDemoActivity", "Presence : " + entryPresence);
 		}
 		
 		// sort by avaliablility
-		Collections.sort(listItems);
+		Collections.sort(userList);
 		
 		adapter.notifyDataSetChanged();
 

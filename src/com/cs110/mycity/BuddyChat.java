@@ -104,7 +104,8 @@ public class BuddyChat extends Activity {
               public void processPacket(Packet packet) {
                
               	Message message = (Message) packet;
-                if (message.getBody() != null  && StringUtils.parseBareAddress(message.getFrom()).equals(recipientName) ) {
+                if (message.getBody() != null && StringUtils.parseBareAddress(message.getFrom()).equals(recipientName)) {
+             
                   String fromName = StringUtils.parseBareAddress(message.getFrom());
                   
                   Log.d(TAG,fromName);

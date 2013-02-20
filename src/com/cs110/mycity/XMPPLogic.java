@@ -4,7 +4,7 @@ import org.jivesoftware.smack.XMPPConnection;
 
 import android.app.Activity;
 
-public class XMPPLogic extends Activity {
+public class XMPPLogic {
 	private XMPPConnection connection = null;
 
 	  private static XMPPLogic instance = null;

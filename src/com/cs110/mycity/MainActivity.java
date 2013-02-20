@@ -9,6 +9,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,13 +31,6 @@ public class MainActivity extends Activity {
 	public static final String HOST = "talk.google.com";
 	public static final int PORT = 5222;
 	public static final String SERVICE = "gmail.com";
-	  
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
 
 	/**
 	 * The default email to populate the email field with.
@@ -121,6 +115,10 @@ public class MainActivity extends Activity {
 		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
+		
+		mEmail = "cse110winter2013@gmail.com";
+		mPassword = "billgriswold";
+			
 
 		boolean cancel = false;
 		View focusView = null;
@@ -224,20 +222,15 @@ public class MainActivity extends Activity {
 			         } catch (XMPPException ex) {
 			             Log.e("XMPPChatDemoActivity",  "[SettingsDialog] Failed to connect to "+ connection.getHost());
 			             Log.e("XMPPChatDemoActivity", ex.toString());
-			             XMPPLogic.getInstance().setConnection(null);
 			         }
 			          try {
 			            connection.login(mEmail, mPassword);
 			            Log.i("XMPPChatDemoActivity",  "Logged in as" + connection.getUser());
 
 			            // Set the status to available
-			            Presence presence = new Presence(Presence.Type.available);
-			            connection.sendPacket(presence);
-			            XMPPLogic.getInstance().setConnection(connection);
 			          } catch (XMPPException ex) {
 			              Log.e("XMPPChatDemoActivity", "Failed to log in as "+ mEmail);
 			              Log.e("XMPPChatDemoActivity", ex.toString());
-			              XMPPLogic.getInstance().setConnection(null);
 			          }
 
 				// Simulate network access.
@@ -245,26 +238,12 @@ public class MainActivity extends Activity {
 			} catch (InterruptedException e) {
 				return false;
 			}
-
-//			for (String credential : DUMMY_CREDENTIALS) {
-//				String[] pieces = credential.split(":");
-//				if (pieces[0].equals(mEmail)) {
-//					// Account exists, return true if the password matches.
-//					return pieces[1].equals(mPassword);
-//				}
-//			}
-
+			
+			Presence presence = new Presence(Presence.Type.available);
+            connection.sendPacket(presence);
+			XMPPLogic.getInstance().setConnection(connection);
 			return true;
-		}
-
-//		 public void setConnection(XMPPConnection connection) {
-//			    this.connection = connection;
-//		}
-//		 
-//		public XMPPConnection getConnection(XMPPConnection connection) {
-//			    return this.connection;
-//		}
-//		 
+		} 
 		 
 		@Override
 		protected void onPostExecute(final Boolean success) {
@@ -272,7 +251,9 @@ public class MainActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
-				finish();
+				Intent myIntent  = new Intent(MainActivity.this, MappingActivity.class);
+				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(myIntent);
 			} else {
 				mPasswordView
 						.setError(getString(R.string.error_incorrect_password));
