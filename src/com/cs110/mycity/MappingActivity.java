@@ -1,12 +1,15 @@
 package com.cs110.mycity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
@@ -21,6 +24,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private LocationManager locationManager;
 	private GeoPoint currentPoint;
 	private Location currentLocation = null;
+	private Button btnUpdate;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -28,9 +33,18 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		mapView = (MapView)findViewById(R.id.mapView);
 		mapView.setBuiltInZoomControls(true);
 		mapController = mapView.getController();
-		mapController.setZoom(3);
+		mapController.setZoom(15);
 		getLastLocation();
 		animateToCurrentLocation();
+		
+		btnUpdate = (Button) findViewById(R.id.chatView_button);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {   
+            @Override
+            public void onClick(View v) {
+            	Intent i = new Intent(v.getContext(), BuddyList.class);
+				startActivity(i);
+            }
+        });
 	}
 
 	@Override

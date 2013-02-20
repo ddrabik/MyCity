@@ -7,5 +7,6 @@
     <string name="edit_text2">Username</string>
     <string name="edit_text1">Password</string>
     <string name="button1">Login</string>
+    <string name="button2">Chat</string>
 
 </resources>

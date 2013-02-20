@@ -52,9 +52,6 @@
         
 		<uses-library android:required="true" android:name="com.google.android.maps" />
     
-    
-    
-    
   </application>
   
   	<uses-feature android:name="android.hardware.location.gps"/>

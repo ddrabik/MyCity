@@ -2,8 +2,6 @@ package com.cs110.mycity;
 
 import org.jivesoftware.smack.XMPPConnection;
 
-import android.app.Activity;
-
 public class XMPPLogic {
 	private XMPPConnection connection = null;
 
