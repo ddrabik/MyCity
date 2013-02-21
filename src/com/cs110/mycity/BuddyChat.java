@@ -61,10 +61,7 @@ public class BuddyChat extends Activity {
 			public void onClick(View view) {
 				String text = messageInput.getText().toString();  
 				chatHelper.sendMessageTo(buddy, currentUser.substring(0, currentUser.indexOf('/')), text);
-
 				setListAdapter();
-
-				//reset edit textbox
 				messageInput.setText("");
 			}
 		});

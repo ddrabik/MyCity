@@ -41,7 +41,6 @@ public class ChatService extends Service {
 				                    	ChatHelper chatHelper = ChatHelper.getInstance();
 				                    	String from = message.getFrom();
 				                    	from = from.substring(0, from.indexOf('/'));
-				                 
 				                    	chatHelper.newMessageReceived(from, message.getBody());				                    	
 			                    	}
 			                    }

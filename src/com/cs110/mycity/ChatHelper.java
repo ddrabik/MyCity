@@ -39,25 +39,6 @@ public class ChatHelper {
 		updateBuddyList();
 	}
 
-	private void updateBuddyList() {
-		if( connection != null ) {
-			Roster roster = connection.getRoster();
-			Collection<RosterEntry> entries = roster.getEntries();
-			for (RosterEntry entry : entries) {
-				String buddy = entry.getUser();
-
-				Presence entryPresence = roster.getPresence(buddy);
-				Presence.Type type = entryPresence.getType();
-				Integer statusCode = (type == Presence.Type.available) ? BUDDY_AVAILABLE : BUDDY_UNAVAILABLE;
-
-				if(buddyList.get(buddy) == null ||
-						!buddyList.get(buddy).equals(BUDDY_MESSAGE_WAITING)) {
-					buddyList.put(buddy, statusCode);
-				}
-			}
-		}
-	}
-
 	public void sendMessageTo(String buddy, String from, String text) {
 		Message msg = new Message(buddy, Message.Type.chat); 
 		msg.setBody(text);
@@ -100,6 +81,25 @@ public class ChatHelper {
 		}
 		Collections.sort(list);
 		return list;
+	}
+	
+	private void updateBuddyList() {
+		if( connection != null ) {
+			Roster roster = connection.getRoster();
+			Collection<RosterEntry> entries = roster.getEntries();
+			for (RosterEntry entry : entries) {
+				String buddy = entry.getUser();
+
+				Presence entryPresence = roster.getPresence(buddy);
+				Presence.Type type = entryPresence.getType();
+				Integer statusCode = (type == Presence.Type.available) ? BUDDY_AVAILABLE : BUDDY_UNAVAILABLE;
+
+				if(buddyList.get(buddy) == null ||
+						!buddyList.get(buddy).equals(BUDDY_MESSAGE_WAITING)) {
+					buddyList.put(buddy, statusCode);
+				}
+			}
+		}
 	}
 
 }
