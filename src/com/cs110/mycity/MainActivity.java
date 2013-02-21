@@ -273,7 +273,7 @@ public class MainActivity extends Activity {
 	
 	@Override
 	public void onDestroy(){
-		super.onDestroy();
 		stopService(new Intent(MainActivity.this, ChatService.class));
+		super.onDestroy();
 	}
 }
