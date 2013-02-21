@@ -5,8 +5,6 @@ import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.filter.MessageTypeFilter;
-import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
 
 import android.app.Service;
@@ -42,15 +40,15 @@ public class ChatService extends Service {
 			                    	if(message.getBody() != null) {
 				                    	ChatHelper chatHelper = ChatHelper.getInstance();
 				                    	String from = message.getFrom();
-				                    	String text = from + ": " + message.getBody();
-				                    	chatHelper.storeMessage(from.substring(0, from.indexOf('/')), text);
+				                    	from = from.substring(0, from.indexOf('/'));
+				                 
+				                    	chatHelper.newMessageReceived(from, message.getBody());				                    	
 			                    	}
 			                    }
 			                });
 			        }
 			    });
 	}
-	
 	
 	@Override
 	public void onDestroy() {
