@@ -1,7 +1,10 @@
 package com.cs110.mycity;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +19,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.OverlayItem;
 
 public class MappingActivity extends MapActivity implements LocationListener {
 
@@ -25,6 +29,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private GeoPoint currentPoint;
 	private Location currentLocation = null;
 	private Button btnUpdate;
+	private Overlay currPos= null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +40,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		mapController = mapView.getController();
 		mapController.setZoom(15);
 		getLastLocation();
+	    drawCurrPositionOverlay();
 		animateToCurrentLocation();
 		
 		btnUpdate = (Button) findViewById(R.id.chatView_button);
@@ -94,6 +100,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	    currentLocation = new Location("");
 	    currentLocation.setLatitude(currentPoint.getLatitudeE6() / 1e6);
 	    currentLocation.setLongitude(currentPoint.getLongitudeE6() / 1e6);
+	    drawCurrPositionOverlay();
 	}
 
 	@Override
@@ -135,6 +142,19 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	protected void onPause() {
 	    super.onPause();
 	    locationManager.removeUpdates(this);
+	}
+	
+	public void drawCurrPositionOverlay(){
+	    List<com.google.android.maps.Overlay> overlays = mapView.getOverlays();
+	    overlays.remove(currPos);
+	    Drawable marker = getResources().getDrawable(R.drawable.mylocation);
+	    currPos = new Overlay(marker,mapView);
+	    if(currentPoint!=null){
+	        OverlayItem overlayitem = new OverlayItem(currentPoint, "Me", "Here I am!");
+	        currPos.addOverlay(overlayitem);
+	        overlays.add(currPos);
+	        currPos.setCurrentLocation(currentLocation);
+	    }
 	}
 
 }
