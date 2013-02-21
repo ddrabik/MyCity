@@ -19,6 +19,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 public class MappingActivity extends MapActivity implements LocationListener {
@@ -29,7 +30,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private GeoPoint currentPoint;
 	private Location currentLocation = null;
 	private Button btnUpdate;
-	private Overlay currPos= null;
+	private MyOverlay currPos= null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -145,10 +146,10 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	}
 	
 	public void drawCurrPositionOverlay(){
-	    List<com.google.android.maps.Overlay> overlays = mapView.getOverlays();
+	    List<Overlay> overlays = mapView.getOverlays();
 	    overlays.remove(currPos);
 	    Drawable marker = getResources().getDrawable(R.drawable.mylocation);
-	    currPos = new Overlay(marker,mapView);
+	    currPos = new MyOverlay(marker,mapView);
 	    if(currentPoint!=null){
 	        OverlayItem overlayitem = new OverlayItem(currentPoint, "Me", "Here I am!");
 	        currPos.addOverlay(overlayitem);

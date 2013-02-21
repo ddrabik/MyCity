@@ -5,5 +5,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/asmack-2010.05.07.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="lib" path="/android-mapviewballoons/bin/android-mapviewballoons.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
