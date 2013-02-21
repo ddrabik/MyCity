@@ -5,6 +5,8 @@ import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.XMPPConnection;
+import org.jivesoftware.smack.filter.MessageTypeFilter;
+import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
 
 import android.app.Service;
@@ -15,6 +17,8 @@ import android.util.Log;
 public class ChatService extends Service {
 	private static final String TAG = "CHATSERVICE";
 	
+	private ChatManager chatmanager = null;
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -23,12 +27,9 @@ public class ChatService extends Service {
 	
 	@Override
 	public void onCreate() {
-		createChat();
-	}
-	
-	private void createChat() {
+		Log.d(TAG, "Chatservice called");
 		XMPPConnection connection = XMPPLogic.getInstance().getConnection();
-		ChatManager chatmanager = connection.getChatManager();
+		chatmanager = connection.getChatManager();
 		chatmanager.addChatListener(
 			    new ChatManagerListener() {
 			        @Override
@@ -36,10 +37,14 @@ public class ChatService extends Service {
 			        {
 			            if (!createdLocally)
 			                chat.addMessageListener(new MessageListener() {
-			                    public void processMessage(Chat chat, Message message) {
-			                    	Log.d(TAG, chat.getThreadID());
-			                    	Log.d(TAG, chat.getParticipant());
-			                        Log.d(TAG, "Received message: " + message.getBody().toString());
+			                    @Override
+								public void processMessage(Chat chat, Message message) {
+			                    	if(message.getBody() != null) {
+				                    	ChatHelper chatHelper = ChatHelper.getInstance();
+				                    	String from = message.getFrom();
+				                    	String text = from + ": " + message.getBody();
+				                    	chatHelper.storeMessage(from.substring(0, from.indexOf('/')), text);
+			                    	}
 			                    }
 			                });
 			        }

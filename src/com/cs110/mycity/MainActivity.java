@@ -244,6 +244,7 @@ public class MainActivity extends Activity {
 			Presence presence = new Presence(Presence.Type.available);
             connection.sendPacket(presence);
 			XMPPLogic.getInstance().setConnection(connection);
+			startService(new Intent(MainActivity.this, ChatService.class));
 			return true;
 		} 
 		 
@@ -268,5 +269,11 @@ public class MainActivity extends Activity {
 			mAuthTask = null;
 			showProgress(false);
 		}
+	}
+	
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		stopService(new Intent(MainActivity.this, ChatService.class));
 	}
 }
