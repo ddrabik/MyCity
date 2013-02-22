@@ -139,14 +139,14 @@ public class MapHelper {
 	public void receivedLocationFrom(String buddy, String xml){
 		
 		
-		Log.d("MAPHELPER", "Receiving locations...");
+		Log.d("MAPHELPER", "Receiving locations2. ..");
 
 		//parse xml here, turn into a location, put into hashmap.
 		String pattern = "<trkpt lat=\"(-?[0-9].[0-9])\" lon=\"(-?[0-9].[0-9])\">.*";
 		xml = xml.replaceAll(pattern, "$1,$2");
 
 		
-		Log.d("MAPHELPER", "XML is: " + xml);
+		Log.d("XXX", "XMLXML is: " + xml);
 		
 //		String first = xml.substring(0, xml.indexOf(',') );
 //		String second = xml.substring(xml.indexOf(',') + 1, xml.length() );
@@ -154,20 +154,25 @@ public class MapHelper {
 		String first = "32.881717";
 		String second = "-117.233483";
 
+		Log.d("XXX", "XXX haha " + 123 + "," + 321 + " to.." + buddy );
 
 		double lat = Double.parseDouble(first);
-		double lon = Integer.parseInt(second);
+		double lon = Double.parseDouble(second);
 		
-		Log.d("MAPHELPER", "XXX lat and lon = " + lat + ',' + lon);
+		Log.d("XXX", "XXX lat and lon = " + lat + ',' + lon);
+		
+		
 		Location buddyLoc = new Location("");
 		
 		buddyLoc.setLatitude(lat);
 		buddyLoc.setLongitude(lon);
 		
 		
+		
 		buddyLocations.put(buddy, buddyLoc);
 		
 		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
+		System.out.println("ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
 	}
 	
 	

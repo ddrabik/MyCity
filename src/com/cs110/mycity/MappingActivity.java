@@ -45,6 +45,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private MyOverlay currPos= null;
 
 	private HashMap<String, Location> buddyLocations;
+	
 
 	private LocationBroadCaster locBroad = null;
 
