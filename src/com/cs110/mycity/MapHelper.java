@@ -144,16 +144,21 @@ public class MapHelper {
 		//parse xml here, turn into a location, put into hashmap.
 		String pattern = "<trkpt lat=\"(-?[0-9].[0-9])\" lon=\"(-?[0-9].[0-9])\">.*";
 		xml = xml.replaceAll(pattern, "$1,$2");
+
 		
 		Log.d("MAPHELPER", "XML is: " + xml);
 		
-		String first = xml.substring(0, xml.indexOf(',') );
-		String second = xml.substring(xml.indexOf(',') + 1, xml.length() );
-
-		int lat = Integer.parseInt(first);
-		int lon = Integer.parseInt(second);
+//		String first = xml.substring(0, xml.indexOf(',') );
+//		String second = xml.substring(xml.indexOf(',') + 1, xml.length() );
 		
-		Log.d("MAPHELPER", " 1234 lat and lon = " + lat + ',' + lon);
+		String first = "32.881717";
+		String second = "-117.233483";
+
+
+		double lat = Double.parseDouble(first);
+		double lon = Integer.parseInt(second);
+		
+		Log.d("MAPHELPER", "XXX lat and lon = " + lat + ',' + lon);
 		Location buddyLoc = new Location("");
 		
 		buddyLoc.setLatitude(lat);

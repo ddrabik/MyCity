@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:clickable="true"
-        android:apiKey="067pHqfvqR31nuvfoM2cl-CW0I1F2XI638m_2YQ"/>
+        android:apiKey="0Q8PlngOTRfCNduV82-ae6h6s7EDxVhgDGmRi7w"/>
 
         <Button
             android:id="@+id/chatView_button"
@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="Chat" />
+        
 
     </FrameLayout>
 </LinearLayout>
