@@ -9,10 +9,7 @@ import java.util.Map;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
-
-import android.util.Log;
 
 public class ChatHelper {
 	private static final String TAG = "CHATHELPER";
@@ -39,14 +36,10 @@ public class ChatHelper {
 	}
 
 	public void sendMessageTo(String buddy, String from, String text) {
-		Message msg = new Message(buddy, Message.Type.chat); 
-		msg.setBody(text);
-
-		if(connection != null) {
-			connection.sendPacket(msg);
-			storeMessage(buddy, from + ": " + text);
-		}
+		ChatService.getInstance().sendMessageTo(buddy, text);
+		storeMessage(buddy, from + ": " + text);
 	}
+	
 
 	public void storeMessage(String buddy, String text) {
 		if(msgDB.get(buddy) == null) {
