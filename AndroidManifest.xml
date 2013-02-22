@@ -3,6 +3,9 @@
   package="com.cs110.mycity"
   android:versionCode="1"
   android:versionName="1.0" >
+  <instrumentation android:name="android.test.InstrumentationTestRunner"
+    android:targetPackage="com.cs110.mycity"
+    android:label="MyCity tests" />
 
   <uses-sdk android:minSdkVersion="8" />
 
@@ -52,11 +55,12 @@
 		<service android:enabled="true" android:name=".ChatService" />
         
 		<uses-library android:required="true" android:name="com.google.android.maps" />
-    
+    	<uses-library android:name="android.test.runner" />
   </application>
   
   	<uses-feature android:name="android.hardware.location.gps"/>
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
+
 
 </manifest>

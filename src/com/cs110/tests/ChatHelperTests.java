@@ -21,8 +21,6 @@ public class ChatHelperTests extends TestCase {
 	private static final String SERVICE = "gmail.com";
 	private String mEmail = "cse110winter2013@gmail.com";
 	private String mPassword = "billgriswold";
-	private static final Integer BUDDY_AVAILABLE = new Integer(1);
-	private static final Integer BUDDY_UNAVAILABLE = new Integer(2);
 
 	public void testInstance() {
 		ChatHelper ch = ChatHelper.getInstance();

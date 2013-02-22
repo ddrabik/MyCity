@@ -15,7 +15,6 @@ import org.jivesoftware.smack.packet.Presence;
 import android.util.Log;
 
 public class ChatHelper {
-
 	private static final String TAG = "CHATHELPER";
 	private static final Integer BUDDY_AVAILABLE = new Integer(1);
 	private static final Integer BUDDY_UNAVAILABLE = new Integer(2);
