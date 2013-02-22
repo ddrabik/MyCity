@@ -11,7 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:clickable="true"
-        android:apiKey="067pHqfvqR31nuvfoM2cl-CW0I1F2XI638m_2YQ"/>
+        android:apiKey="0tEb0ylimUKNqRbQO8I6iLLEeUdpxUTLQ5BQL0A"/>
 
         <Button
             android:id="@+id/chatView_button"
