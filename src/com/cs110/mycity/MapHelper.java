@@ -18,6 +18,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Point;
@@ -59,6 +60,8 @@ public class MapHelper {
 	private MapHelper() {
 
 	}
+	
+	
 
 	//call to send messages
 	public void sendMessageTo(String buddy, Location location) {
@@ -110,17 +113,6 @@ public class MapHelper {
 		}
 
 		
-		
-//		while(it.hasNext()) {
-//
-//			Map.Entry<String, Location> pairs = it.next();
-//			sendMessageTo(pairs.getKey(), (pairs.getValue()));
-//			Log.d("MAPHELPER", "Sending to.." + pairs.getKey());
-//
-//		}
-//		Log.d("MAPHELPER", "Finished iterating...");
-
-		
 	}
 	
 	
@@ -157,27 +149,24 @@ public class MapHelper {
 	public void receivedLocationFrom(String buddy, String xml){
 		
 		
-		Log.d("MAPHELPER", "Receiving locations2. ..");
+		Log.d("MAPHELPER", "Receiving locations. ..");
 
 		//parse xml here, turn into a location, put into hashmap.
-		String pattern = "<trkpt lat=\"(-?[0-9].[0-9])\" lon=\"(-?[0-9].[0-9])\">.*";
-		xml = xml.replaceAll(pattern, "$1,$2");
 
-		
-		Log.d("XXX", "XMLXML is: " + xml);
-		
-//		String first = xml.substring(0, xml.indexOf(',') );
-//		String second = xml.substring(xml.indexOf(',') + 1, xml.length() );
-		
-		String first = "32.881717";
-		String second = "-117.233483";
+		String lats = xml.substring(xml.indexOf("lat") + 5,xml.indexOf("lon") - 2 );
+		String lons = xml.substring(xml.indexOf("lon") + 5,xml.indexOf('>') - 1 );
+//		String timeStamp = xml.substring(xml.indexOf('T') + 1, xml.indexOf('Z'));
 
-		Log.d("XXX", "XXX haha " + 123 + "," + 321 + " to.." + buddy );
-
-		double lat = Double.parseDouble(first);
-		double lon = Double.parseDouble(second);
+		Log.d("MAPHELPER", "  THE LAT IS " + lats);
+		Log.d("MAPHELPER", "  THE LON IS " + lons);
+//		Log.d("MAPHELPER", "  THE TIME IS " + timeStamp);
 		
-		Log.d("XXX", "XXX lat and lon = " + lat + ',' + lon);
+
+		double lat = Double.parseDouble(lats);
+		double lon = Double.parseDouble(lons);
+		
+		Log.d("MAPHELPER", "XXX lat and lon = " + lat + ',' + lon);
+		
 		
 		
 		Location buddyLoc = new Location("");
@@ -186,11 +175,26 @@ public class MapHelper {
 		buddyLoc.setLongitude(lon);
 		
 		
+
 		//Store Location object with buddy in HashMap
+
 		buddyLocations.put(buddy, buddyLoc);
 		
-		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
+		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy + buddyLoc.getTime() );
 		System.out.println("ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
+		
+		
+
+		if(!buddyLocations.containsKey(buddy)){
+		//reply to the user, our current location.
+			Location currentLocation = MappingActivity.getLocationStatic();
+			sendMessageTo(buddy, currentLocation);
+		}
+		
+		
+		MappingActivity mapAct = MappingActivity.getInstance();
+		mapAct.drawCurrPositionOverlay();
+		
 	}
 	
 	
