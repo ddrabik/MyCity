@@ -306,14 +306,11 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	public  void drawCurrPositionOverlay(){
 
 		List<Overlay> overlays = mapView.getOverlays();
-		overlays.remove(currPos);
+		overlays.clear();
 		Drawable marker = getResources().getDrawable(R.drawable.mylocation);
 
 		currPos = null;
-
-
 		currPos = new MyOverlay(marker,mapView);
-
 
 		if(currentPoint!=null){
 			OverlayItem overlayitem = new OverlayItem(currentPoint, "Me", "Here I am!");
@@ -322,9 +319,6 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			overlays.add(currPos);
 			currPos.setCurrentLocation(currentLocation);
 		}
-
-
-
 
 
 		HashMap<String, Location> buddyLocations = mapHelper.getBuddyLocations();
@@ -336,7 +330,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			Log.d("MAPACTIVITY","DRAWING PINS");
 
 			MyOverlay buddyPin = new MyOverlay(marker, mapView);
-			overlays.remove(buddyPin);
+//			overlays.remove(buddyPin);
 			Map.Entry<String, Location> pairs = it.next();
 			if(pairs.getValue() != null){
 				GeoPoint point = new GeoPoint( (int) (pairs.getValue().getLatitude()*1E6),  (int) (pairs.getValue().getLongitude()*1E6));

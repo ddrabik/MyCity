@@ -120,7 +120,7 @@ public class MainActivity extends Activity {
 //		
 		mEmail = "cse11test@gmail.com";
 		mPassword = "cse11test1";
-		
+//		
 //		mEmail = mEmailView.getText().toString();
 //		mPassword = mPasswordView.getText().toString();
 
@@ -136,7 +136,7 @@ public class MainActivity extends Activity {
 		
 //		mEmail = "cse11test2@gmail.com.";
 //		mPassword = "cse11test1";
-//////		
+////		
 		
 		
 		boolean cancel = false;
