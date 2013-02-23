@@ -146,26 +146,29 @@ public class MapHelper {
 		xml = xml.replaceAll(pattern, "$1,$2");
 
 		
+		String lats = xml.substring(xml.indexOf("lat") + 5,xml.indexOf("lon") - 2 );
+		String lons = xml.substring(xml.indexOf("lon") + 5,xml.indexOf('>') - 1 );
+
+		Log.d("MAPHELPER", "  THE LAT IS " + lats);
+		Log.d("MAPHELPER", "  THE LON IS " + lons);
+
+		
 		Log.d("XXX", "XMLXML is: " + xml);
 		
-//		String first = xml.substring(0, xml.indexOf(',') );
-//		String second = xml.substring(xml.indexOf(',') + 1, xml.length() );
-		
-		String first = "32.881717";
-		String second = "-117.233483";
 
-		Log.d("XXX", "XXX haha " + 123 + "," + 321 + " to.." + buddy );
 
-		double lat = Double.parseDouble(first);
-		double lon = Double.parseDouble(second);
+		double lat = Double.parseDouble(lats);
+		double lon = Double.parseDouble(lons);
 		
-		Log.d("XXX", "XXX lat and lon = " + lat + ',' + lon);
+		Log.d("MAPHELPER", "XXX lat and lon = " + lat + ',' + lon);
+		
 		
 		
 		Location buddyLoc = new Location("");
 		
 		buddyLoc.setLatitude(lat);
 		buddyLoc.setLongitude(lon);
+		
 		
 		
 		

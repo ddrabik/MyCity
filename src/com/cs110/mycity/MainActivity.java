@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
+	
 
 	// UI references.
 	private EditText mEmailView;
@@ -113,17 +114,24 @@ public class MainActivity extends Activity {
 		mPasswordView.setError(null);
 
 		// Store values at the time of the login attempt.
-		mEmail = mEmailView.getText().toString();
-		mPassword = mPasswordView.getText().toString();
-		
-		mEmail = "cse110winter2013@gmail.com";
-		mPassword = "billgriswold";
-////			
+//		mEmail = mEmailView.getText().toString();
+//		mPassword = mPasswordView.getText().toString();
+//		
+//		mEmail = "cse11test@gmail.com";
+//		mPassword = "cse11test1";
+//		
 
+		
+		
+		mEmail = "marianwangwang@gmail.com";
+		mPassword = "wangwang";
+//////		
+		
 		
 		boolean cancel = false;
 		View focusView = null;
 
+		
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
 			mPasswordView.setError(getString(R.string.error_field_required));

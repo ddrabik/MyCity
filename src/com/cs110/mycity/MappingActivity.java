@@ -64,6 +64,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		getLastLocation();
 		drawCurrPositionOverlay();
 		animateToCurrentLocation();
+		
+		
 
 		btnUpdate = (Button) findViewById(R.id.chatView_button);
 		btnUpdate.setOnClickListener(new View.OnClickListener() {   
@@ -75,9 +77,14 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		});
 
 
+
+
+		
+		
+
 		//new thread to run in background that shouts locations and waits for response?
-		int delay = 8*10000; // delay for 1 sec. 
-		int period = 25 * 10000; // repeat every 10 sec. 
+		int delay = 5*10000; // delay for 1 sec. 
+		int period = 100 * 10000; // repeat every 10 sec. 
 		Timer timer = new Timer(); 
 
 		timer.scheduleAtFixedRate(new TimerTask() 
@@ -210,7 +217,14 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	public void onLocationChanged(Location newLocation) {
 		setCurrentLocation(newLocation);
 		animateToCurrentLocation();
+		
+		
+		Log.d("MAPACTIVITY", "LOCATION HAS CHANGEDD >>>>>>>>>>>>>>>>>>");
+		locBroad = new LocationBroadCaster();
+		locBroad.execute((Void) null);
 	}
+	
+	
 
 	@Override
 	public void onProviderDisabled(String provider) {
@@ -262,6 +276,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 
+	
 
 
 
