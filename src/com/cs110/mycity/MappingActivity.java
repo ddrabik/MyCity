@@ -32,6 +32,18 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private Button btnUpdate;
 	private MyOverlay currPos= null;
 	
+	public Location getCurrentLocation() {
+		return this.currentLocation;
+	}
+	
+	public GeoPoint getCurrentPoint() {
+		return this.currentPoint;
+	}
+	
+	public MyOverlay getCurrPos() {
+		return this.currPos;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
