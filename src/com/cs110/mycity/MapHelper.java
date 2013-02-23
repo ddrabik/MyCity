@@ -48,6 +48,8 @@ public class MapHelper {
 	private MapHelper() {
 
 	}
+	
+	
 
 	//call to send messages
 	public void sendMessageTo(String buddy, Location location) {
@@ -98,17 +100,6 @@ public class MapHelper {
 		}
 
 		
-		
-//		while(it.hasNext()) {
-//
-//			Map.Entry<String, Location> pairs = it.next();
-//			sendMessageTo(pairs.getKey(), (pairs.getValue()));
-//			Log.d("MAPHELPER", "Sending to.." + pairs.getKey());
-//
-//		}
-//		Log.d("MAPHELPER", "Finished iterating...");
-
-		
 	}
 	
 	
@@ -139,22 +130,23 @@ public class MapHelper {
 	public void receivedLocationFrom(String buddy, String xml){
 		
 		
-		Log.d("MAPHELPER", "Receiving locations2. ..");
+		Log.d("MAPHELPER", "Receiving locations. ..");
 
 		//parse xml here, turn into a location, put into hashmap.
-		String pattern = "<trkpt lat=\"(-?[0-9].[0-9])\" lon=\"(-?[0-9].[0-9])\">.*";
-		xml = xml.replaceAll(pattern, "$1,$2");
+		
+		
 
 		
 		String lats = xml.substring(xml.indexOf("lat") + 5,xml.indexOf("lon") - 2 );
 		String lons = xml.substring(xml.indexOf("lon") + 5,xml.indexOf('>') - 1 );
+//		String timeStamp = xml.substring(xml.indexOf('T') + 1, xml.indexOf('Z'));
 
 		Log.d("MAPHELPER", "  THE LAT IS " + lats);
 		Log.d("MAPHELPER", "  THE LON IS " + lons);
+//		Log.d("MAPHELPER", "  THE TIME IS " + timeStamp);
+		
 
-		
-		Log.d("XXX", "XMLXML is: " + xml);
-		
+
 
 
 		double lat = Double.parseDouble(lats);
@@ -174,8 +166,19 @@ public class MapHelper {
 		
 		buddyLocations.put(buddy, buddyLoc);
 		
-		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
+		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy + buddyLoc.getTime() );
 		System.out.println("ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
+		
+		
+
+		if(!buddyLocations.containsKey(buddy)){
+		//reply to the user, our current location.
+			Location currentLocation = MappingActivity.getLocationStatic();
+			sendMessageTo(buddy, currentLocation);
+		}
+		
+		
+		
 	}
 	
 	

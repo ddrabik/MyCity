@@ -117,8 +117,8 @@ public class MainActivity extends Activity {
 //		mEmail = mEmailView.getText().toString();
 //		mPassword = mPasswordView.getText().toString();
 //		
-//		mEmail = "cse11test@gmail.com";
-//		mPassword = "cse11test1";
+		mEmail = "cse11test@gmail.com";
+		mPassword = "cse11test1";
 //		
 //		mEmail = mEmailView.getText().toString();
 //		mPassword = mPasswordView.getText().toString();
@@ -129,8 +129,12 @@ public class MainActivity extends Activity {
 
 		
 		
-		mEmail = "marianwangwang@gmail.com";
-		mPassword = "wangwang";
+//		mEmail = "marianwangwang@gmail.com";
+//		mPassword = "wangwang";
+		
+		
+//		mEmail = "cse11test2@gmail.com.";
+//		mPassword = "cse11test1";
 //////		
 		
 		

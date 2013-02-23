@@ -2,7 +2,9 @@ package com.cs110.mycity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -41,29 +43,38 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private LocationManager locationManager;
 	private GeoPoint currentPoint;
 	private Location currentLocation = null;
+	private static Location helperLocation = null;
 	private Button btnUpdate;
 	private MyOverlay currPos= null;
 
 	private HashMap<String, Location> buddyLocations;
-	
-
-	public Location getCurrentLocation() {
-		return this.currentLocation;
-	}
-	
-	public GeoPoint getCurrentPoint() {
-		return this.currentPoint;
-	}
-	
-	public MyOverlay getCurrPos() {
-		return this.currPos;
-	}
-	
 
 
 	private LocationBroadCaster locBroad = null;
-
 	private MapHelper mapHelper = MapHelper.getInstance();
+
+	public Location getCurrentLocation() {
+		helperLocation = this.currentLocation;
+		return this.currentLocation;
+
+	}
+
+
+	public static Location getLocationStatic() {
+		return helperLocation;
+	}
+
+	public GeoPoint getCurrentPoint() {
+		return this.currentPoint;
+	}
+
+	public MyOverlay getCurrPos() {
+		return this.currPos;
+	}
+
+
+
+
 
 
 
@@ -79,8 +90,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		getLastLocation();
 		drawCurrPositionOverlay();
 		animateToCurrentLocation();
-		
-		
+
+
 
 		btnUpdate = (Button) findViewById(R.id.chatView_button);
 		btnUpdate.setOnClickListener(new View.OnClickListener() {   
@@ -94,8 +105,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 
-		
-		
+
+
 
 		//new thread to run in background that shouts locations and waits for response?
 		int delay = 5*10000; // delay for 1 sec. 
@@ -192,6 +203,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		String provider = getBestProvider();
 		if(provider != null) {
 			currentLocation = locationManager.getLastKnownLocation(provider);
+			helperLocation = this.currentLocation;
+
 		} else {
 			Toast.makeText(this, "Please enable your location",  Toast.LENGTH_LONG).show();
 		}
@@ -225,6 +238,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		currentLocation = new Location("");
 		currentLocation.setLatitude(currentPoint.getLatitudeE6() / 1e6);
 		currentLocation.setLongitude(currentPoint.getLongitudeE6() / 1e6);
+		helperLocation = this.currentLocation;
+
 		drawCurrPositionOverlay();
 	}
 
@@ -232,14 +247,14 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	public void onLocationChanged(Location newLocation) {
 		setCurrentLocation(newLocation);
 		animateToCurrentLocation();
-		
-		
+
+
 		Log.d("MAPACTIVITY", "LOCATION HAS CHANGEDD >>>>>>>>>>>>>>>>>>");
 		locBroad = new LocationBroadCaster();
 		locBroad.execute((Void) null);
 	}
-	
-	
+
+
 
 	@Override
 	public void onProviderDisabled(String provider) {
@@ -280,18 +295,38 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.remove(currPos);
 		Drawable marker = getResources().getDrawable(R.drawable.mylocation);
+
+
 		currPos = new MyOverlay(marker,mapView);
 		if(currentPoint!=null){
 			OverlayItem overlayitem = new OverlayItem(currentPoint, "Me", "Here I am!");
 			currPos.addOverlay(overlayitem);
 			overlays.add(currPos);
 			currPos.setCurrentLocation(currentLocation);
+
+			HashMap<String, Location> buddyLocations = mapHelper.getBuddyLocations();
+			Iterator<Map.Entry<String, Location>> it = buddyLocations.entrySet().iterator();
+
+
+			while(it.hasNext()){
+
+				Map.Entry<String, Location> pairs = it.next();
+				
+				GeoPoint point = new GeoPoint((int) pairs.getValue().getLatitude(),  (int) pairs.getValue().getLongitude());
+				
+				OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
+				currPos.addOverlay(overlayitem2);				
+			}
+
 		}
+
+
 	}
 
 
 
-	
+
+
 
 
 
