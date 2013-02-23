@@ -18,6 +18,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 
 import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
 
 import android.annotation.SuppressLint;
 import android.graphics.Point;
@@ -133,10 +134,7 @@ public class MapHelper {
 		Log.d("MAPHELPER", "Receiving locations. ..");
 
 		//parse xml here, turn into a location, put into hashmap.
-		
-		
 
-		
 		String lats = xml.substring(xml.indexOf("lat") + 5,xml.indexOf("lon") - 2 );
 		String lons = xml.substring(xml.indexOf("lon") + 5,xml.indexOf('>') - 1 );
 //		String timeStamp = xml.substring(xml.indexOf('T') + 1, xml.indexOf('Z'));
@@ -145,9 +143,6 @@ public class MapHelper {
 		Log.d("MAPHELPER", "  THE LON IS " + lons);
 //		Log.d("MAPHELPER", "  THE TIME IS " + timeStamp);
 		
-
-
-
 
 		double lat = Double.parseDouble(lats);
 		double lon = Double.parseDouble(lons);
@@ -178,6 +173,8 @@ public class MapHelper {
 		}
 		
 		
+		MappingActivity mapAct = MappingActivity.getInstance();
+		mapAct.drawCurrPositionOverlay();
 		
 	}
 	

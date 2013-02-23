@@ -49,10 +49,20 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 	private HashMap<String, Location> buddyLocations;
 
+	private static MappingActivity mInstance = null;
+
 
 	private LocationBroadCaster locBroad = null;
 	private MapHelper mapHelper = MapHelper.getInstance();
 
+	
+	
+	
+	private MappingActivity(){
+		
+	}
+	
+	
 	public Location getCurrentLocation() {
 		helperLocation = this.currentLocation;
 		return this.currentLocation;
@@ -74,6 +84,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 
+	
 
 
 
@@ -81,6 +92,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		mInstance = MappingActivity.this;
 
 		setContentView(R.layout.activity_mapping);
 		mapView = (MapView)findViewById(R.id.mapView);
@@ -291,7 +303,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		locationManager.removeUpdates(this);
 	}
 
-	public void drawCurrPositionOverlay(){
+	public  void drawCurrPositionOverlay(){
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.remove(currPos);
 		Drawable marker = getResources().getDrawable(R.drawable.mylocation);
@@ -311,11 +323,12 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			while(it.hasNext()){
 
 				Map.Entry<String, Location> pairs = it.next();
-				
-				GeoPoint point = new GeoPoint((int) pairs.getValue().getLatitude(),  (int) pairs.getValue().getLongitude());
-				
-				OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
-				currPos.addOverlay(overlayitem2);				
+				if(pairs != null){
+					GeoPoint point = new GeoPoint((int) pairs.getValue().getLatitude(),  (int) pairs.getValue().getLongitude());
+
+					OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
+					currPos.addOverlay(overlayitem2);	
+				}
 			}
 
 		}
@@ -326,6 +339,13 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 
+	public synchronized static MappingActivity getInstance() {
+		if(mInstance==null){
+			mInstance = new MappingActivity();
+		}
+		return mInstance;
+	}
+	
 
 
 
