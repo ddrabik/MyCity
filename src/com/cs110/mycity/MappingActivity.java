@@ -47,9 +47,24 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private HashMap<String, Location> buddyLocations;
 	
 
+	public Location getCurrentLocation() {
+		return this.currentLocation;
+	}
+	
+	public GeoPoint getCurrentPoint() {
+		return this.currentPoint;
+	}
+	
+	public MyOverlay getCurrPos() {
+		return this.currPos;
+	}
+	
+
+
 	private LocationBroadCaster locBroad = null;
 
 	private MapHelper mapHelper = MapHelper.getInstance();
+
 
 
 	@Override

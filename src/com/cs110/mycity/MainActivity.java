@@ -27,7 +27,7 @@ import android.widget.TextView;
  * well.
  */
 public class MainActivity extends Activity {
-	
+
 	public static final String HOST = "talk.google.com";
 	public static final int PORT = 5222;
 	public static final String SERVICE = "gmail.com";
@@ -67,17 +67,17 @@ public class MainActivity extends Activity {
 
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mPasswordView
-				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-					@Override
-					public boolean onEditorAction(TextView textView, int id,
-							KeyEvent keyEvent) {
-						if (id == R.id.login || id == EditorInfo.IME_NULL) {
-							attemptLogin();
-							return true;
-						}
-						return false;
-					}
-				});
+		.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView textView, int id,
+					KeyEvent keyEvent) {
+				if (id == R.id.login || id == EditorInfo.IME_NULL) {
+					attemptLogin();
+					return true;
+				}
+				return false;
+			}
+		});
 
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
@@ -120,6 +120,12 @@ public class MainActivity extends Activity {
 //		mEmail = "cse11test@gmail.com";
 //		mPassword = "cse11test1";
 //		
+//		mEmail = mEmailView.getText().toString();
+//		mPassword = mPasswordView.getText().toString();
+
+//		mEmail = "cse110winter2013@gmail.com";
+//		mPassword = "billgriswold";
+//>>>>>>> 601fbd03dea0d099747a36ba723de4e575a2c5fd
 
 		
 		
@@ -165,7 +171,7 @@ public class MainActivity extends Activity {
 			showProgress(true);
 			mAuthTask = new UserLoginTask();
 			mAuthTask.execute((Void) null);
-			
+
 			// 
 		}
 	}
@@ -184,25 +190,25 @@ public class MainActivity extends Activity {
 
 			mLoginStatusView.setVisibility(View.VISIBLE);
 			mLoginStatusView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 1 : 0)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
-									: View.GONE);
-						}
-					});
+			.alpha(show ? 1 : 0)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginStatusView.setVisibility(show ? View.VISIBLE
+							: View.GONE);
+				}
+			});
 
 			mLoginFormView.setVisibility(View.VISIBLE);
 			mLoginFormView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 0 : 1)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
-						}
-					});
+			.alpha(show ? 0 : 1)
+			.setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginFormView.setVisibility(show ? View.GONE
+							: View.VISIBLE);
+				}
+			});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
@@ -217,46 +223,46 @@ public class MainActivity extends Activity {
 	 */
 	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 		XMPPConnection connection = null;
-		
+
 		@Override
 		protected Boolean doInBackground(Void... params) {
 			// TODO: attempt authentication against a network service.
 			try {
 				// Create a connection
-			       ConnectionConfiguration connConfig = new ConnectionConfiguration(HOST, PORT, SERVICE);
-			       connection = new XMPPConnection(connConfig);
-			         try {
-			           connection.connect();
-			           Log.i("XMPPChatDemoActivity",  "[SettingsDialog] Connected to "+connection.getHost());
-			         } catch (XMPPException ex) {
-			             Log.e("XMPPChatDemoActivity",  "[SettingsDialog] Failed to connect to "+ connection.getHost());
-			             Log.e("XMPPChatDemoActivity", ex.toString());
-			             return false;
-			         }
-			          try {
-			            connection.login(mEmail, mPassword);
-			            Log.i("XMPPChatDemoActivity",  "Logged in as" + connection.getUser());
+				ConnectionConfiguration connConfig = new ConnectionConfiguration(HOST, PORT, SERVICE);
+				connection = new XMPPConnection(connConfig);
+				try {
+					connection.connect();
+					Log.i("XMPPChatDemoActivity",  "[SettingsDialog] Connected to "+connection.getHost());
+				} catch (XMPPException ex) {
+					Log.e("XMPPChatDemoActivity",  "[SettingsDialog] Failed to connect to "+ connection.getHost());
+					Log.e("XMPPChatDemoActivity", ex.toString());
+					return false;
+				}
+				try {
+					connection.login(mEmail, mPassword);
+					Log.i("XMPPChatDemoActivity",  "Logged in as" + connection.getUser());
 
-			            // Set the status to available
-			          } catch (XMPPException ex) {
-			              Log.e("XMPPChatDemoActivity", "Failed to log in as "+ mEmail);
-			              Log.e("XMPPChatDemoActivity", ex.toString());
-			              return false;
-			          }
+					// Set the status to available
+				} catch (XMPPException ex) {
+					Log.e("XMPPChatDemoActivity", "Failed to log in as "+ mEmail);
+					Log.e("XMPPChatDemoActivity", ex.toString());
+					return false;
+				}
 
 				// Simulate network access.
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				return false;
 			}
-			
+
 			Presence presence = new Presence(Presence.Type.available);
-            connection.sendPacket(presence);
+			connection.sendPacket(presence);
 			XMPPLogic.getInstance().setConnection(connection);
 			startService(new Intent(MainActivity.this, ChatService.class));
 			return true;
 		} 
-		 
+
 		@Override
 		protected void onPostExecute(final Boolean success) {
 			mAuthTask = null;
@@ -268,7 +274,7 @@ public class MainActivity extends Activity {
 				startActivity(myIntent);
 			} else {
 				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
+				.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 			}
 		}
@@ -279,7 +285,7 @@ public class MainActivity extends Activity {
 			showProgress(false);
 		}
 	}
-	
+
 	@Override
 	public void onDestroy(){
 		stopService(new Intent(MainActivity.this, ChatService.class));
