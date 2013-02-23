@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
 		mEmail = "cse110winter2013@gmail.com";
 		mPassword = "billgriswold";
 
-
+		
 		boolean cancel = false;
 		View focusView = null;
 
