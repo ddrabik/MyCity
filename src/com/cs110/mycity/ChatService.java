@@ -17,7 +17,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
-
+/*
+ * ChatService handles the chat service functionality in our app.
+ * It handles the sending and receiving of messages.
+ */
 public class ChatService extends Service {
 	private static final String TAG = "CHATSERVICE";
 
@@ -42,6 +45,10 @@ public class ChatService extends Service {
 	}
 
 	@Override
+	/* When the user first logs in, the chat service is created and is
+	 * always running, listening for messages that are received from a
+	 * buddy.
+	 */
 	public void onCreate() {
 		mInstance = ChatService.this;
 		mapHelper = MapHelper.getInstance();
@@ -56,6 +63,7 @@ public class ChatService extends Service {
 						if (!createdLocally)
 							chat.addMessageListener(new MessageListener() {
 								@Override
+								// process a new received message from a buddy
 								public void processMessage(Chat chat, Message message) {
 									if(message.getBody() != null) {
 										ChatHelper chatHelper = ChatHelper.getInstance();
@@ -85,7 +93,8 @@ public class ChatService extends Service {
 					}
 				});
 	}
-	
+	/* send a new message to a buddy
+	 */
 	public void sendMessageTo(String buddy, String text) {
 		Message msg = new Message(buddy, Message.Type.chat); 
 		msg.setBody(text);

@@ -1,7 +1,11 @@
 package com.cs110.mycity;
 
 import org.jivesoftware.smack.XMPPConnection;
-
+/*
+ *  XMPPLogic is an example of the singleton pattern. We use this
+ *  to coordinate chat connection actions across the main/login,
+ *  map, and chat activities.
+ */
 public class XMPPLogic {
 	private XMPPConnection connection = null;
 	private static XMPPLogic instance = null;

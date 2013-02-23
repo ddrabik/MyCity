@@ -33,7 +33,11 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-
+/*
+ * MappingActivity allows for all of the mapping activity in the app. After
+ * logging in, the login activity switches to the mapping activity to display
+ * the user on the map.
+ */
 public class MappingActivity extends MapActivity implements LocationListener {
 
 	private MapController mapController;
@@ -68,6 +72,10 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 	@Override
+	/* after logging in, the map is displayed
+	 * (non-Javadoc)
+	 * @see com.google.android.maps.MapActivity#onCreate(android.os.Bundle)
+	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -83,6 +91,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		btnUpdate = (Button) findViewById(R.id.chatView_button);
 		btnUpdate.setOnClickListener(new View.OnClickListener() {   
 			@Override
+            // also start activity of the buddy list, to allow for switching
+            // from the map to the buddy list
 			public void onClick(View v) {
 				Intent i = new Intent(v.getContext(), BuddyList.class);
 				startActivity(i);
@@ -181,6 +191,9 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		return false;
 	}
 
+	/* displays the last known location before moving to the current location of
+	 * the user after login
+	 */
 	public void getLastLocation(){
 		String provider = getBestProvider();
 		if(provider != null) {
@@ -197,12 +210,16 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	}
 
 
-
+	/* move the map to the point the user is at
+	 */
 	public void animateToCurrentLocation(){
 		if(currentPoint!=null){
 			mapController.animateTo(currentPoint);
 		}
 	}
+	/*
+	 * Return a string representing the best Location provider
+	 */
 	public String getBestProvider(){
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
@@ -211,6 +228,10 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		String bestProvider = locationManager.getBestProvider(criteria, true);
 		return bestProvider;
 	}
+	/*
+	 * Set the current location to Location and then draw the position
+	 * on the map overlay
+	 */
 	public void setCurrentLocation(Location location){
 		int currLatitude = (int) (location.getLatitude()*1E6);
 		int currLongitude = (int) (location.getLongitude()*1E6);
@@ -222,6 +243,11 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	}
 
 	@Override
+	/* location changed so set the current location to the new location and
+	 * move the map to there.
+	 * (non-Javadoc)
+	 * @see android.location.LocationListener#onLocationChanged(android.location.Location)
+	 */
 	public void onLocationChanged(Location newLocation) {
 		setCurrentLocation(newLocation);
 		animateToCurrentLocation();
@@ -261,7 +287,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		super.onPause();
 		locationManager.removeUpdates(this);
 	}
-
+	/* used to draw the overlay of the user's pin at the current location
+	 */
 	public void drawCurrPositionOverlay(){
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.remove(currPos);

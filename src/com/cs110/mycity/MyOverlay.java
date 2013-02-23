@@ -15,9 +15,7 @@ import com.google.android.maps.OverlayItem;
 import com.readystatesoftware.mapviewballoons.BalloonItemizedOverlay;
 
 /**
- * TODO (zjivani): write class javadoc
- *
- * @author zjivani
+ * MyOverlay creates the overlay of pins of the buddies on the map
  *
  */
 public class MyOverlay extends BalloonItemizedOverlay<OverlayItem>{
@@ -47,6 +45,9 @@ public class MyOverlay extends BalloonItemizedOverlay<OverlayItem>{
 		populate();
 	}
 	@Override
+	/* returns true if the pin was tapped -> if the user wanted to see
+	 * or chat with the buddy
+	 */
 	protected boolean onBalloonTap(int index, OverlayItem item) {
 		Toast.makeText(mContext, "Overlay Item " + index + " tapped!",
 				Toast.LENGTH_LONG).show();
@@ -54,6 +55,9 @@ public class MyOverlay extends BalloonItemizedOverlay<OverlayItem>{
 	}
 	public void setCurrentLocation(Location loc){
 		this.currentLocation = loc;
+	}
+	public Location getCurrentLocation() {
+		return currentLocation;
 	}
 
 }

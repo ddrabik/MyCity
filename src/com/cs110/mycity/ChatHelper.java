@@ -10,7 +10,11 @@ import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.packet.Presence;
-
+/*
+ * ChatHelper helps the ChatService class to allow for chatting functionality.
+ * There are methods to allow for storing messages into a chat history, getting
+ * and updating the buddy list,  
+ */
 public class ChatHelper {
 	private static final String TAG = "CHATHELPER";
 	private static final Integer BUDDY_AVAILABLE = new Integer(1);
@@ -40,7 +44,8 @@ public class ChatHelper {
 		storeMessage(buddy, from + ": " + text);
 	}
 	
-
+	/* stores the message to allow for a chat history 
+	 */
 	public void storeMessage(String buddy, String text) {
 		if(msgDB.get(buddy) == null) {
 			msgDB.put(buddy, new ArrayList<String>());
@@ -62,7 +67,9 @@ public class ChatHelper {
 	public void viewedConversationWith(String buddy) {
 		buddyList.put(buddy, BUDDY_AVAILABLE);
 	}
-
+	
+	/* getBuddyList updates and returns the compiled buddy list  
+	 */
 	public ArrayList<String> getBuddyList() {
 		updateBuddyList();
 		ArrayList<String> list = new ArrayList<String>();
@@ -75,6 +82,10 @@ public class ChatHelper {
 		return list;
 	}
 	
+	/* updateBuddyList updates the buddy list by using the Roster class
+	 * to go through the list of friends, and checking if their presence
+	 * changed from available to unavailable, or vice versa.
+	 */	
 	private void updateBuddyList() {
 		if( connection != null ) {
 			Roster roster = connection.getRoster();

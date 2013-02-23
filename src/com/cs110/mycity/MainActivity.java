@@ -116,8 +116,8 @@ public class MainActivity extends Activity {
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 
-		mEmail = "cse110winter2013@gmail.com";
-		mPassword = "billgriswold";
+		mEmail = "marianwangwang@gmail.com";
+		mPassword = "wangwang";
 
 		
 		boolean cancel = false;

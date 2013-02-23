@@ -36,6 +36,7 @@ public class BuddyChat extends Activity {
 	private ListView listview;
 
 
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -94,6 +95,12 @@ public class BuddyChat extends Activity {
 	public void onPause() {
 		chatHelper.viewedConversationWith(buddy);
 		super.onPause();
+	}
+
+
+	public String getCurrentUser() {
+		// TODO Auto-generated method stub
+		return this.currentUser;
 	}
 
 }

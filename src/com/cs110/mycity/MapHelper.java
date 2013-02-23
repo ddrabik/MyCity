@@ -24,20 +24,28 @@ import android.graphics.Point;
 import android.location.Location;
 import android.util.Log;
 
+/*
+ * MapHelper class assists with the connection between buddy locations
+ * on the map and the chat service to send the location broadcast
+ * messages. 
+ */
+
 @SuppressLint("DefaultLocale")
 public class MapHelper {
 
 	private static final String TAG = "MAPHELPER";
 	
-
 	private static MapHelper mInstance = null;
 
+	//Store the buddy locations in a HashMap
 	private static HashMap<String, Location> buddyLocations = new HashMap<String, Location>();
 	
 	private static ChatService chatService = ChatService.getInstance();
 	
 
-
+	/*
+	 * Return the MapHelper instance (singleton pattern)
+	 */
 	public synchronized static MapHelper getInstance() {
 		if(mInstance==null){
 			mInstance = new MapHelper();
@@ -45,6 +53,9 @@ public class MapHelper {
 		return mInstance;
 	}
 
+	/*
+	 * Private constructor generates an empty MapHelper
+	 */
 	private MapHelper() {
 
 	}
@@ -76,6 +87,7 @@ public class MapHelper {
 		   String time = dateFinal;
 
 		  
+		   //XML formatting string for <trkpt/> to notify buddies of location
 		   String xml =  String.format(Locale.US, "<trkpt lat=\"%f\" lon=\"%f\">\n<ele>0</ele><time>%s</time>\n</trkpt>", lat, lon, ele, time);
 			Log.d("MAPHELPER", "Sending " + lat + "," + lon + " to.." + buddy );
 
@@ -112,7 +124,10 @@ public class MapHelper {
 	}
 	
 	
-	
+	/*
+	 * Send locations too all registered online users (including gTalk-
+	 * only buddies)
+	 */
 	public void sendToAllUsers(Location location){
 		Log.d("MAPHELPER", "Sending to all...");
 
@@ -135,7 +150,10 @@ public class MapHelper {
 	
 	
 	
-	
+	/*
+	 * Accept locations from buddies. Locations are any messages
+	 * that match a certain string expression.
+	 */
 	public void receivedLocationFrom(String buddy, String xml){
 		
 		
@@ -168,7 +186,7 @@ public class MapHelper {
 		buddyLoc.setLongitude(lon);
 		
 		
-		
+		//Store Location object with buddy in HashMap
 		buddyLocations.put(buddy, buddyLoc);
 		
 		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
@@ -176,7 +194,9 @@ public class MapHelper {
 	}
 	
 	
-	
+	/*
+	 * Getter method for buddyLocations
+	 */
 	public HashMap<String, Location> getBuddyLocations(){
 		return buddyLocations;
 		
