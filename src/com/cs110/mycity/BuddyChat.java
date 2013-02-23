@@ -8,6 +8,7 @@ import org.jivesoftware.smack.filter.MessageTypeFilter;
 import org.jivesoftware.smack.filter.PacketFilter;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Packet;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
