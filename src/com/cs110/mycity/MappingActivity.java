@@ -55,14 +55,14 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private LocationBroadCaster locBroad = null;
 	private MapHelper mapHelper = MapHelper.getInstance();
 
-	
-	
-	
-	private MappingActivity(){
-		
-	}
-	
-	
+
+
+
+	//	private MappingActivity(){
+	//		
+	//	}
+
+
 	public Location getCurrentLocation() {
 		helperLocation = this.currentLocation;
 		return this.currentLocation;
@@ -84,7 +84,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 
-	
+
 
 
 
@@ -304,37 +304,63 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	}
 
 	public  void drawCurrPositionOverlay(){
+
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.remove(currPos);
 		Drawable marker = getResources().getDrawable(R.drawable.mylocation);
 
+		currPos = null;
+
 
 		currPos = new MyOverlay(marker,mapView);
+
+
 		if(currentPoint!=null){
 			OverlayItem overlayitem = new OverlayItem(currentPoint, "Me", "Here I am!");
+
 			currPos.addOverlay(overlayitem);
 			overlays.add(currPos);
 			currPos.setCurrentLocation(currentLocation);
-
-			HashMap<String, Location> buddyLocations = mapHelper.getBuddyLocations();
-			Iterator<Map.Entry<String, Location>> it = buddyLocations.entrySet().iterator();
-
-
-			while(it.hasNext()){
-
-				Map.Entry<String, Location> pairs = it.next();
-				if(pairs != null){
-					GeoPoint point = new GeoPoint((int) pairs.getValue().getLatitude(),  (int) pairs.getValue().getLongitude());
-
-					OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
-					currPos.addOverlay(overlayitem2);	
-				}
-			}
-
 		}
 
 
+
+
+
+		HashMap<String, Location> buddyLocations = mapHelper.getBuddyLocations();
+		Iterator<Map.Entry<String, Location>> it = buddyLocations.entrySet().iterator();
+
+
+
+		while(it.hasNext()){
+			Log.d("MAPACTIVITY","DRAWING PINS");
+
+			MyOverlay buddyPin = new MyOverlay(marker, mapView);
+			overlays.remove(buddyPin);
+			Map.Entry<String, Location> pairs = it.next();
+			if(pairs.getValue() != null){
+				GeoPoint point = new GeoPoint( (int) (pairs.getValue().getLatitude()*1E6),  (int) (pairs.getValue().getLongitude()*1E6));
+
+
+				if(point!=null){
+					Log.d("MAPACTIVITY", "GEOPOINT IS: " + point.toString());
+
+					OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
+
+					buddyPin.addOverlay(overlayitem2);	
+					overlays.add(buddyPin);
+					buddyPin.setCurrentLocation(pairs.getValue());
+
+				}
+			}
+		}
+
 	}
+
+
+
+
+
 
 
 
@@ -345,7 +371,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		}
 		return mInstance;
 	}
-	
+
 
 
 

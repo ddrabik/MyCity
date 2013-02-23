@@ -109,6 +109,7 @@ public class MainActivity extends Activity {
 			return;
 		}
 
+		
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -119,7 +120,7 @@ public class MainActivity extends Activity {
 //		
 		mEmail = "cse11test@gmail.com";
 		mPassword = "cse11test1";
-//		
+		
 //		mEmail = mEmailView.getText().toString();
 //		mPassword = mPasswordView.getText().toString();
 
