@@ -127,6 +127,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 		timer.scheduleAtFixedRate(new TimerTask() 
 		{ 
+			@Override
 			public void run() 
 			{ 
 				Log.d("MAPHELPER", "LOOPING AGAIN");

@@ -91,6 +91,7 @@ public class BuddyChat extends Activity {
 		listview.setAdapter(adapter);
 	}	
 	
+	@Override
 	public void onPause() {
 		chatHelper.viewedConversationWith(buddy);
 		super.onPause();

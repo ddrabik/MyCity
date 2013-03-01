@@ -47,6 +47,7 @@ public class BuddyList extends ListActivity {
 		lv.setAdapter(adapter);
 	}
 	
+	@Override
 	public void onResume() {
 		super.onResume();
 		updateView();
