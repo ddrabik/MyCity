@@ -18,14 +18,11 @@ public class MapHelper {
 
 	private static final String TAG = "MAPHELPER";
 	
-
 	private static MapHelper mInstance = null;
 
 	private static HashMap<String, Location> buddyLocations = new HashMap<String, Location>();
 	
-	private static ChatService chatService = ChatService.getInstance();
-	
-
+	private static MapService chatService = MapService.getInstance();
 
 	public synchronized static MapHelper getInstance() {
 		if(mInstance==null){
