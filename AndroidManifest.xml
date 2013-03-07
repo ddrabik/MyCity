@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.cs110.mycity"
-  android:versionCode="1"
-  android:versionName="1.0" >
-  <instrumentation android:name="android.test.InstrumentationTestRunner"
-    android:targetPackage="com.cs110.mycity"
-    android:label="MyCity tests" />
+    package="com.cs110.mycity"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
-  <uses-sdk android:minSdkVersion="8" />
+    <instrumentation
+        android:name="android.test.InstrumentationTestRunner"
+        android:label="MyCity tests"
+        android:targetPackage="com.cs110.mycity" />
 
-  <application
-    android:icon="@drawable/ic_launcher"
-    android:label="@string/app_name" >
-    
-    <activity
+    <uses-sdk android:minSdkVersion="8" />
+
+    <application
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <activity
             android:name="com.cs110.mycity.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -29,36 +30,62 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.cs110.mycity.BuddyList"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.cs110.mycity.BuddyChat"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
             </intent-filter>
         </activity>
-		
-		<service android:enabled="true" android:name=".ChatService" />
-        
-		<uses-library android:required="true" android:name="com.google.android.maps" />
-    	<uses-library android:name="android.test.runner" />
-  </application>
-  
-  	<uses-feature android:name="android.hardware.location.gps"/>
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-	<uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
-	
-	<uses-permission android:name="android.permission.INTERNET"/>
+        <activity
+            android:name="com.cs110.mycity.Chat.BuddyView"
+            android:label="@string/app_name"
+            android:parentActivityName="com.cs110.mycity.City.MappingActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cs110.mycity.MappingActivity" />
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.cs110.mycity.Chat.ChatView"
+            android:label="@string/app_name"
+            android:parentActivityName="com.cs110.mycity.Chat.BuddyView" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.cs110.mycity.Chat.BuddyView" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".Chat.SocketListener"
+            android:enabled="true" />
+        <service
+            android:name=".MapService"
+            android:enabled="true" />
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
+        <uses-library android:name="android.test.runner" />
+    </application>
+
+    <uses-feature android:name="android.hardware.location.gps" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

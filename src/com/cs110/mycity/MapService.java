@@ -16,19 +16,19 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-public class ChatService extends Service {
+public class MapService extends Service {
 	private static final String TAG = "CHATSERVICE";
 
 	private ChatManager chatmanager = null;
 	private XMPPConnection connection;
 
-	private static ChatService mInstance;
+	private static MapService mInstance;
 	
 	private  MapHelper mapHelper;
 
-	public synchronized static ChatService getInstance() {
+	public synchronized static MapService getInstance() {
 		if(mInstance==null){
-			mInstance = new ChatService();
+			mInstance = new MapService();
 		}
 		return mInstance;
 	}
@@ -41,7 +41,7 @@ public class ChatService extends Service {
 
 	@Override
 	public void onCreate() {
-		mInstance = ChatService.this;
+		mInstance = MapService.this;
 		mapHelper = MapHelper.getInstance();
 
 		connection = XMPPLogic.getInstance().getConnection();
@@ -56,11 +56,9 @@ public class ChatService extends Service {
 								@Override
 								public void processMessage(Chat chat, Message message) {
 									if(message.getBody() != null) {
-										ChatHelper chatHelper = ChatHelper.getInstance();
 										String from = message.getFrom();
 										from = from.substring(0, from.indexOf('/'));
 										Log.d(TAG, "Received from " + from + ": " + message.getBody());	
-										chatHelper.newMessageReceived(from, message.getBody());	
 									
 										if(message.getBody().startsWith("<trkp")){
 											Log.d(TAG, "Sending location to MAP HELPER from...  "	+ from);
