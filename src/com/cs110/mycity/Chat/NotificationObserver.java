@@ -46,7 +46,7 @@ public class NotificationObserver implements Observer{
 		if(s.didRecieveMessage() && ! s.getLastBuddy().equals(excludedBuddy)) {
 			NotificationCompat.Builder mBuilder =
 			        new NotificationCompat.Builder(context)
-			        .setSmallIcon(R.drawable.buddy_new_message)
+			        .setSmallIcon(R.drawable.ic_launcher)
 			        .setAutoCancel(true)
 			        .setContentTitle(s.getLastBuddy())
 			        .setContentText(s.getLastMessage());
