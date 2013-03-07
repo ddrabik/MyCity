@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.cs110.mycity.MainActivity.UserLoginTask;
+import com.cs110.mycity.Chat.BuddyView;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -109,7 +110,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		btnUpdate.setOnClickListener(new View.OnClickListener() {   
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(v.getContext(), BuddyList.class);
+				Intent i = new Intent(v.getContext(), BuddyView.class);
 				startActivity(i);
 			}
 		});

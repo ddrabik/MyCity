@@ -31,23 +31,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cs110.mycity.BuddyList"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.cs110.mycity.BuddyChat"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name="com.cs110.mycity.Chat.BuddyView"
             android:label="@string/app_name"
-            android:parentActivityName="com.cs110.mycity.City.MappingActivity" >
+            android:parentActivityName="com.cs110.mycity.MappingActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.cs110.mycity.MappingActivity" />
