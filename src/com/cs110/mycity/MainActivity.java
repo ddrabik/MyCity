@@ -133,8 +133,8 @@ public class MainActivity extends Activity {
 
 		
 		
-//		mEmail = "marianwangwang@gmail.com";
-//		mPassword = "wangwang";
+		mEmail = "marianwangwang@gmail.com";
+		mPassword = "wangwang";
 		
 		
 //		mEmail = "cse11test2@gmail.com.";
@@ -277,6 +277,7 @@ public class MainActivity extends Activity {
 
 			if (success) {
 				startService(new Intent(MainActivity.this, SocketListener.class));
+				startService(new Intent(MainActivity.this, MapService.class));
 				Intent myIntent  = new Intent(MainActivity.this, MappingActivity.class);
 				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(myIntent);

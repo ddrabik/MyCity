@@ -180,7 +180,7 @@ public class SocketListener extends Service implements Subject {
 	private MessageListener createMessageListener() {
 		MessageListener listener = new MessageListener() {
 			public void processMessage(Chat chat, Message message) {
-				if(message.getBody() != null) {
+				if(message.getBody() != null && ! message.getBody().startsWith("<trkp")) {
 					setLatestMessageInfo(chat.getParticipant(), message.getBody());
 					setBuddyPresence(chat.getParticipant(), new Integer(0));
 					updateChat(chat, message);
