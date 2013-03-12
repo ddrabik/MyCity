@@ -6,15 +6,15 @@
     <FrameLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
+
         <com.google.android.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:clickable="true"
-
-        android:apiKey="0tEb0ylimUKNqRbQO8I6iLLEeUdpxUTLQ5BQL0A"/>
-
-
+            android:id="@+id/mapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" 
+            android:apiKey="0l9WlBKEENNLtcooGHMHHPf-mDjDlqlZ-hfEDVQ"
+            
+            />
 
         <Button
             android:id="@+id/chatView_button"

@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.cs110.mycity.MainActivity.UserLoginTask;
 import com.cs110.mycity.Chat.BuddyView;
+import com.cs110.mycity.Chat.ChatView;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -56,7 +57,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private LocationBroadCaster locBroad = null;
 	private MapHelper mapHelper = MapHelper.getInstance();
 
-
+	private static String buddyName;
 
 
 	//	private MappingActivity(){
@@ -255,6 +256,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		helperLocation = this.currentLocation;
 
 		drawCurrPositionOverlay();
+		LoadPlaces lp = new LoadPlaces();
+		lp.execute();
 	}
 
 	@Override
@@ -307,6 +310,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 	public  void drawCurrPositionOverlay(){
 
+
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.clear();
 		Drawable marker = getResources().getDrawable(R.drawable.mylocation);
@@ -332,7 +336,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			Log.d("MAPACTIVITY","DRAWING PINS");
 
 			MyOverlay buddyPin = new MyOverlay(marker, mapView);
-//			overlays.remove(buddyPin);
+			//			overlays.remove(buddyPin);
 			Map.Entry<String, Location> pairs = it.next();
 			if(pairs.getValue() != null){
 				GeoPoint point = new GeoPoint( (int) (pairs.getValue().getLatitude()*1E6),  (int) (pairs.getValue().getLongitude()*1E6));
@@ -343,7 +347,28 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 					OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
 
+					buddyName = pairs.getKey();
 					buddyPin.addOverlay(overlayitem2);	
+
+
+					//set the chat button to chat with map buddies
+					Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
+					overlayChatButton.setOnClickListener(new View.OnClickListener() {   
+						@Override
+						public void onClick(View v) {
+					
+							Log.d("OVERLAY", "chatting attempt.......");
+						
+							Intent i = new Intent(v.getContext(), ChatView.class);
+							if(buddyName != null) {
+								i.putExtra("SELECTED_BUDDY", buddyName.substring(1));
+							}
+							startActivity(i);
+						} 
+					});
+
+					
+
 					overlays.add(buddyPin);
 					buddyPin.setCurrentLocation(pairs.getValue());
 
@@ -361,6 +386,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 
+
 	public synchronized static MappingActivity getInstance() {
 		if(mInstance==null){
 			mInstance = new MappingActivity();
@@ -369,8 +395,133 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	}
 
 
+	public void drawPOIs(PlaceList nearPlaces) {
+		Drawable marker = getResources().getDrawable(R.drawable.city_icon);
+		MyOverlay pOIs = new MyOverlay(marker, mapView);
+		List overlays = mapView.getOverlays();
+
+		// loop through each place
+		for (Place p : nearPlaces.results) {
+			int lat = (int) (p.geometry.location.lat * 1e6);
+			int lng = (int) (p.geometry.location.lng * 1e6);
+
+			OverlayItem overlayItem = new OverlayItem(new GeoPoint(lat, lng),
+					p.name, p.formatted_address);
+
+			pOIs.addOverlay(overlayItem);
+			Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
+//			overlayChatButton.setVisibility(0);
+//			overlayChatButton.setEnabled(false);
+			
+			Log.d("POI", "Place: " + p.name+" "+lat+ " "+lng);
+		}
+
+		overlays.add(pOIs);
+		pOIs.setCurrentLocation(currentLocation);
+	}
 
 
+	/**
+	 * Background Async Task to Load Google places
+	 * */
+	class LoadPlaces extends AsyncTask <String, String, PlaceList > {
+		public GooglePlaces googlePlaces;
+		/**
+		 * Before starting background thread Show Progress Dialog
+		 * */
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+		}
+
+		/**
+		 * getting Places JSON
+		 * */
+		protected PlaceList doInBackground(String... args) {
+			// creating Places class object
+
+			googlePlaces = new GooglePlaces();
+			PlaceList nearPlaces = null;
+			try {
+				// Separate your place types by PIPE symbol "|"
+				// If you want all types places make it as null
+				// Check list of types supported by google
+				//
+				String types = null; // Listing all places
+
+				// Radius in meters - increase this value if you don't find any
+				// places
+				double radius = 1500; // 1500 meters
+
+				if (currentLocation != null) {
+					// get nearest places
+					nearPlaces = googlePlaces.search(
+							currentLocation.getLatitude(),
+							currentLocation.getLongitude(), radius, types);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return nearPlaces;
+		}
+
+		/**
+		 * After completing background task show the data in UI Always use
+		 * runOnUiThread(new Runnable()) to update UI from background thread,
+		 * otherwise you will get error
+		 * **/
+		protected void onPostExecute(PlaceList nearPlaces) {
+			//Log error
+			if(nearPlaces == null )
+				return;
+
+			/**
+			 * Updating parsed Places into LISTVIEW
+			 * */
+			// Get json response status
+			String status = nearPlaces.status;
+
+			// Check for all possible status
+			if (status.equals("OK")) {
+				// Successfully got places details
+				if (nearPlaces.results != null) {
+					drawPOIs(nearPlaces);
+				}
+			} else if (status.equals("ZERO_RESULTS")) {
+				// Zero results found
+				Toast.makeText(
+						MappingActivity.this,
+						"Sorry no places found. Try to change the types of places",
+						Toast.LENGTH_LONG).show();
+			} else if (status.equals("UNKNOWN_ERROR")) {
+				Toast.makeText(MappingActivity.this,
+						"Sorry unknown error occured.",
+						Toast.LENGTH_LONG).show();
+			} else if (status.equals("OVER_QUERY_LIMIT")) {
+				Toast.makeText(
+						MappingActivity.this,
+						"Sorry query limit to google places is reached",
+						Toast.LENGTH_LONG).show();
+			} else if (status.equals("REQUEST_DENIED")) {
+				Toast.makeText(MappingActivity.this,
+						"Sorry error occured. Request is denied",
+						Toast.LENGTH_LONG).show();
+			} else if (status.equals("INVALID_REQUEST")) {
+				Toast.makeText(MappingActivity.this,
+						"Sorry error occured. Invalid Request",
+						Toast.LENGTH_LONG).show();
+			} else {
+				Toast.makeText(MappingActivity.this,
+						"Sorry error occured.", Toast.LENGTH_LONG)
+						.show();
+			}
+		}
+
+	}
 
 
 }
+
+
+

@@ -127,15 +127,15 @@ public class MainActivity extends Activity {
 //		mEmail = mEmailView.getText().toString();
 //		mPassword = mPasswordView.getText().toString();
 
-//		mEmail = "cse110winter2013@gmail.com";
-//		mPassword = "billgriswold";
+		mEmail = "cse110winter2013@gmail.com";
+		mPassword = "billgriswold";
 //>>>>>>> 601fbd03dea0d099747a36ba723de4e575a2c5fd
 
 		
 		
-		mEmail = "marianwangwang@gmail.com";
-		mPassword = "wangwang";
-		
+//		mEmail = "marianwangwang@gmail.com";
+//		mPassword = "wangwang";
+//		
 		
 //		mEmail = "cse11test2@gmail.com.";
 //		mPassword = "cse11test1";
