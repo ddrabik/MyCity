@@ -104,7 +104,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		getLastLocation();
 		drawCurrPositionOverlay();
 		animateToCurrentLocation();
-
+		LoadPlaces lp = new LoadPlaces();
+		lp.execute();
 
 
 		btnUpdate = (Button) findViewById(R.id.chatView_button);
@@ -371,6 +372,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 					overlays.add(buddyPin);
 					buddyPin.setCurrentLocation(pairs.getValue());
+					LoadPlaces lp = new LoadPlaces();
+					lp.execute();
 
 				}
 			}
@@ -378,7 +381,17 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 	}
 
-
+	public void onOverlayClick(View v){
+		Log.d("OVERLAY", "chatting attempt.......");
+		
+		//Andy: test buddyName. I think it might just be the last buddy added to the map.
+		//i don't know where we get and where we can store the proper value
+		Intent i = new Intent(v.getContext(), ChatView.class);
+		if(buddyName != null) {
+			i.putExtra("SELECTED_BUDDY", buddyName);
+		}
+		startActivity(i);
+	}
 
 
 
