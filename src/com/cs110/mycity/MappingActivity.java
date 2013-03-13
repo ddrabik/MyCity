@@ -313,10 +313,10 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 		List<Overlay> overlays = mapView.getOverlays();
 		overlays.clear();
-		Drawable marker = getResources().getDrawable(R.drawable.mylocation);
+		Drawable mymarker = getResources().getDrawable(R.drawable.mylocation);
 
 		currPos = null;
-		currPos = new MyOverlay(marker,mapView);
+		currPos = new MyOverlay(mymarker,mapView);
 
 		if(currentPoint!=null){
 			OverlayItem overlayitem = new OverlayItem(currentPoint, "Me", "Here I am!");
@@ -334,8 +334,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 		while(it.hasNext()){
 			Log.d("MAPACTIVITY","DRAWING PINS");
-
-			MyOverlay buddyPin = new MyOverlay(marker, mapView);
+			Drawable buddymarker = getResources().getDrawable(R.drawable.buddy);
+			MyOverlay buddyPin = new MyOverlay(buddymarker, mapView);
 			//			overlays.remove(buddyPin);
 			Map.Entry<String, Location> pairs = it.next();
 			if(pairs.getValue() != null){
@@ -406,7 +406,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			int lng = (int) (p.geometry.location.lng * 1e6);
 
 			OverlayItem overlayItem = new OverlayItem(new GeoPoint(lat, lng),
-					p.name, p.formatted_address);
+					p.name, p.vicinity);
 
 			pOIs.addOverlay(overlayItem);
 			Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
