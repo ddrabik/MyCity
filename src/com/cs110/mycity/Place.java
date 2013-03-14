@@ -25,6 +25,10 @@ public class Place {
 	 
 	    @Key
 	    public String formatted_phone_number;
+	  
+	    
+	    @Key
+	    public String website;
 	 
 	    @Override
 	    public String toString() {

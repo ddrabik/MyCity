@@ -2,9 +2,11 @@ package com.cs110.mycity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,12 +25,17 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.cs110.mycity.MainActivity.UserLoginTask;
+import com.cs110.mycity.MapContentView;
 import com.cs110.mycity.Chat.BuddyView;
 import com.cs110.mycity.Chat.ChatView;
 import com.google.android.maps.GeoPoint;
@@ -37,6 +44,8 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+import com.google.android.maps.Projection;
+import com.readystatesoftware.*;
 
 public class MappingActivity extends MapActivity implements LocationListener {
 
@@ -50,6 +59,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private MyOverlay currPos= null;
 
 	private HashMap<String, Location> buddyLocations;
+	private Set<String> localBuddies;
 
 	private static MappingActivity mInstance = null;
 
@@ -58,6 +68,23 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private MapHelper mapHelper = MapHelper.getInstance();
 
 	private static String buddyName;
+	private double radius = 1500;
+	
+	
+	
+	//variable for determining long press and then automatically adding a pin to the map
+	private int minMillisecondThresholdForLongClick = 800;
+	private long startTimeForLongClick = 0;
+	private float xScreenCoordinateForLongClick;
+	private float yScreenCoordinateForLongClick;
+	private float xtolerance=10;//x pixels that your finger can be off but still constitute a long press
+	private float ytolerance=10;//y pixels that your finger can be off but still constitute a long press
+	private float xlow; //actual screen coordinate when you subtract the tolerance
+	private float xhigh; //actual screen coordinate when you add the tolerance
+	private float ylow; //actual screen coordinate when you subtract the tolerance
+	private float yhigh; //actual screen coordinate when you add the tolerance
+	
+	
 
 
 	//	private MappingActivity(){
@@ -103,10 +130,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		mapController.setZoom(15);
 		getLastLocation();
 		drawCurrPositionOverlay();
+		drawBuddies();
 		animateToCurrentLocation();
-		LoadPlaces lp = new LoadPlaces();
-		lp.execute();
-
 
 		btnUpdate = (Button) findViewById(R.id.chatView_button);
 		btnUpdate.setOnClickListener(new View.OnClickListener() {   
@@ -120,12 +145,9 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 
 
-
-
-
 		//new thread to run in background that shouts locations and waits for response?
-		int delay = 5*10000; // delay for 1 sec. 
-		int period = 100 * 10000; // repeat every 10 sec. 
+		int delay = 1000;//5*10000; // delay for 1 sec. 
+		int period = 10000;//100 * 10000; // repeat every 10 sec. 
 		Timer timer = new Timer(); 
 
 		timer.scheduleAtFixedRate(new TimerTask() 
@@ -257,8 +279,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		helperLocation = this.currentLocation;
 
 		drawCurrPositionOverlay();
-		LoadPlaces lp = new LoadPlaces();
-		lp.execute();
+		drawBuddies();
+		new LoadPlaces().execute();
 	}
 
 	@Override
@@ -309,14 +331,13 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		locationManager.removeUpdates(this);
 	}
 
-	public  void drawCurrPositionOverlay(){
-
+	public void drawCurrPositionOverlay(){
 
 		List<Overlay> overlays = mapView.getOverlays();
-		overlays.clear();
+		//overlays.clear();
+		overlays.remove(currPos);
 		Drawable mymarker = getResources().getDrawable(R.drawable.mylocation);
 
-		currPos = null;
 		currPos = new MyOverlay(mymarker,mapView);
 
 		if(currentPoint!=null){
@@ -327,11 +348,13 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			currPos.setCurrentLocation(currentLocation);
 		}
 
+	}
 
-		HashMap<String, Location> buddyLocations = mapHelper.getBuddyLocations();
+	public void drawBuddies(){
+		
+		List<Overlay> overlays = mapView.getOverlays();
+		buddyLocations = mapHelper.getBuddyLocations();
 		Iterator<Map.Entry<String, Location>> it = buddyLocations.entrySet().iterator();
-
-
 
 		while(it.hasNext()){
 			Log.d("MAPACTIVITY","DRAWING PINS");
@@ -340,8 +363,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			//			overlays.remove(buddyPin);
 			Map.Entry<String, Location> pairs = it.next();
 			if(pairs.getValue() != null){
-				GeoPoint point = new GeoPoint( (int) (pairs.getValue().getLatitude()*1E6),  (int) (pairs.getValue().getLongitude()*1E6));
-
+				GeoPoint point = new GeoPoint( (int) (pairs.getValue().getLatitude()*1E6),
+						                       (int) (pairs.getValue().getLongitude()*1E6));
 
 				if(point!=null){
 					Log.d("MAPACTIVITY", "GEOPOINT IS: " + point.toString());
@@ -350,12 +373,40 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 					buddyName = pairs.getKey();
 					buddyPin.addOverlay(overlayitem2);
+			
+					Log.d("MAPACTIVITY", "buddyName = " + buddyName);
 					
+					//check if location is within radius
+                    double longDiff = currentLocation.getLongitude()-pairs.getValue().getLongitude();
+                    double latDiff = currentLocation.getLatitude()-pairs.getValue().getLatitude();
+                    boolean isLocal = Math.sqrt(Math.pow(longDiff, 2) + Math.pow(latDiff, 2)) < radius;
+                    //add to list of local buddies
+
+                    Log.d("MAPACTIVITY", "isLocal = " + isLocal);
+                   
+                    if(isLocal){
+                        Log.d("MAPACTIVITY", buddyName + " is close!");
+                        if(localBuddies == null){
+                            localBuddies = new HashSet<String>();
+                        }
+                        if(!localBuddies.contains(buddyName)){
+                            Log.d("MAPACTIVITY", "NOTIFY:" + buddyName + " is close!");
+                            localBuddies.add(buddyName);
+                        }
+                    } else {
+                        localBuddies.remove(buddyName);
+                    }
+
+                    Log.d("MAPACTIVITY", "localBuddies.size = " + localBuddies.size());
 					
-
-
+                    
+                    
+					LayoutInflater inflater = this.getLayoutInflater();
+			        LinearLayout v = (LinearLayout)inflater.inflate(R.layout.balloon_overlay, null);
+			        
 					//set the chat button to chat with map buddies
-					Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
+					Button overlayChatButton =(Button)v.findViewById(R.id.overlay_chat_button);
+					overlayChatButton.setVisibility(0); //To set visible
 					overlayChatButton.setOnClickListener(new View.OnClickListener() {   
 						@Override
 						public void onClick(View v) {
@@ -369,13 +420,13 @@ public class MappingActivity extends MapActivity implements LocationListener {
 							startActivity(i);
 						} 
 					});
-
+			
 					
-
+					Log.d("MAPACTIVITY", "Adding buddy pin!");
+					
 					overlays.add(buddyPin);
 					buddyPin.setCurrentLocation(pairs.getValue());
-					LoadPlaces lp = new LoadPlaces();
-					lp.execute();
+					mapView.postInvalidate();
 
 				}
 			}
@@ -383,20 +434,17 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 	}
 
-	public void onOverlayClick(View v){
-		Log.d("OVERLAY", "chatting attempt.......");
-		
-		//Andy: test buddyName. I think it might just be the last buddy added to the map.
-		//i don't know where we get and where we can store the proper value
-		Intent i = new Intent(v.getContext(), ChatView.class);
-		if(buddyName != null) {
-			i.putExtra("SELECTED_BUDDY", buddyName);
-		}
-		startActivity(i);
-	}
-
-
-
+//	public void onOverlayClick(View v){
+//		Log.d("OVERLAY", "chatting attempt.......");
+//		
+//		//Andy: test buddyName. I think it might just be the last buddy added to the map.
+//		//i don't know where we get and where we can store the proper value
+//		Intent i = new Intent(v.getContext(), ChatView.class);
+//		if(buddyName != null) {
+//			i.putExtra("SELECTED_BUDDY", buddyName);
+//		}
+//		startActivity(i);
+//	}
 
 
 
@@ -424,7 +472,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 				PlaceList pl = new GooglePlaces().details(p.reference);
 				OverlayItem overlayItem = new OverlayItem(new GeoPoint(lat, lng),
 						p.name, "Address: \n"+pl.result.formatted_address+"\n"+
-						"Phone number: "+pl.result.formatted_phone_number);
+						"Phone number: "+pl.result.formatted_phone_number+"\n"+
+						"Website: "+pl.result.website);
 
 				pOIs.addOverlay(overlayItem);
 				Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
@@ -542,7 +591,160 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		}
 
 	}
+	
+	
+	
+//	public void addUserContent(GeoPoint point) {
+//		Drawable marker = getResources().getDrawable(R.drawable.usercontent);
+//		List<Overlay> overlays = mapView.getOverlays();
+//		MyOverlay usercontent = new MyOverlay(marker,mapView);
+//		OverlayItem overlayitem = new OverlayItem(point, "New User Content", "Add a description");
+//		usercontent.addOverlay(overlayitem);
+//		overlays.add(usercontent);
+//		Location l = new Location("");
+//		l.setLatitude((point.getLatitudeE6() * 1e6));
+//		l.setLongitude(point.getLongitudeE6() * 1e6);
+//		usercontent.setCurrentLocation(l);
+//		//mapView.postInvalidate();
+//	}
+//	
+//	
+//    class OnLongPressListener implements MapContentView.OnLongpressListener {
+//
+//    	@Override
+//    	public void onLongpress(MapView view, GeoPoint longpressLocation) {
+//
+//    		final GeoPoint gp = longpressLocation;
+//
+//    		runOnUiThread(new Runnable() {
+//
+//    			@Override
+//    			public void run() {
+//    				MappingActivity.this.addUserContent(gp);
+//    			}
+//
+//    		});
+//
+//    	}
+//
+//    }
+	
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        /* We want to capture the place the user long pressed on the map and add a marker (pin) on the map at that lat/long.
+         * This solution:
+         *  1. Allows you to set the time threshold for what constitutes a long press
+         *  2. Doesn't get fooled by scrolling, multi-touch, or non-multi-touch events
 
+         * Thank you Roger Kind Kristiansen for the main idea
+         */     
+
+        //get the action from the MotionEvent: down, move, or up
+        int actionType = ev.getAction();
+
+        if (actionType == MotionEvent.ACTION_DOWN) {
+            //user pressed the button down so let's initialize the main variables that we care about:
+            // later on when the "Action Up" event fires, the "DownTime" should match the "startTimeForLongClick" that we set here  
+            // the coordinate on the screen should not change much during the long press
+            startTimeForLongClick=ev.getEventTime();
+            xScreenCoordinateForLongClick=ev.getX();
+            yScreenCoordinateForLongClick=ev.getY();
+
+        } else if (actionType == MotionEvent.ACTION_MOVE) {
+            //For non-long press actions, the move action can happen a lot between ACTION_DOWN and ACTION_UP                    
+            if (ev.getPointerCount()>1) {
+                //easiest way to detect a multi-touch even is if the pointer count is greater than 1
+                //next thing to look at is if the x and y coordinates of the person's finger change.
+                startTimeForLongClick=0; //instead of a timer, just reset this class variable and in our ACTION_UP event, the DownTime value will not match and so we can reset.                        
+            } else {
+                //I know that I am getting to the same action as above, startTimeForLongClick=0, but I want the processor
+                //to quickly skip over this step if it detects the pointer count > 1 above
+                float xmove = ev.getX(); //where is their finger now?                   
+                float ymove = ev.getY();
+                //these next four values allow you set a tiny box around their finger in case
+                //they don't perfectly keep their finger still on a long click.
+                xlow = xScreenCoordinateForLongClick - xtolerance;
+                xhigh= xScreenCoordinateForLongClick + xtolerance;
+                ylow = yScreenCoordinateForLongClick - ytolerance;
+                yhigh= yScreenCoordinateForLongClick + ytolerance;
+                if ((xmove<xlow || xmove> xhigh) || (ymove<ylow || ymove> yhigh)){
+                    //out of the range of an acceptable long press, reset the whole process
+                    startTimeForLongClick=0;
+                }
+            }
+
+        } else if (actionType == MotionEvent.ACTION_UP) {
+            //determine if this was a long click:
+            long eventTime = ev.getEventTime();
+            long downTime = ev.getDownTime(); //this value will match the startTimeForLongClick variable as long as we didn't reset the startTimeForLongClick variable because we detected nonsense that invalidated a long press in the ACTION_MOVE block
+
+            //make sure the start time for the original "down event" is the same as this event's "downTime"
+            if (startTimeForLongClick==downTime){ 
+                //see if the event time minus the start time is within the threshold
+                if ((eventTime-startTimeForLongClick)>minMillisecondThresholdForLongClick){ 
+                    //make sure we are at the same spot where we started the long click
+                    float xup = ev.getX();                  
+                    float yup = ev.getY();
+                    //I don't want the overhead of a function call:
+                    xlow = xScreenCoordinateForLongClick - xtolerance;
+                    xhigh= xScreenCoordinateForLongClick + xtolerance;
+                    ylow = yScreenCoordinateForLongClick - ytolerance;
+                    yhigh= yScreenCoordinateForLongClick + ytolerance;
+                    if ((xup>xlow && xup<xhigh) && (yup>ylow && yup<yhigh)){ 
+
+                        //**** safe to process your code for an actual long press **** 
+                        //comment out these next rows after you confirm in logcat that the long press works
+                        long totaltime=eventTime-startTimeForLongClick;
+                        String strtotaltime=Long.toString(totaltime);                               
+                        Log.d("long press detected: ", strtotaltime);
+
+
+                         
+                        //Now get the latitude/longitude of where you clicked.  Replace all the code below if you already know how to translate a screen coordinate to lat/long.  I know it works though.
+
+                        //*****************
+                        //I have my map under a tab so I have to account for the tab height and the notification bar at the top of the phone.  
+                        // Maybe there are other ways so just ignore this if you already know how to get the lat/long of the pixels that were pressed.
+                        /*int TabHeightAdjustmentPixels=tabHost.getTabWidget().getChildAt(0).getLayoutParams().height;
+                        int EntireTabViewHeight = tabHost.getHeight();
+                        Display display = getWindowManager().getDefaultDisplay(); 
+                        int EntireScreenHeight = display.getHeight();
+                        int NotificationBarHeight=EntireScreenHeight-EntireTabViewHeight;
+                        */
+                        //the projection is mapping pixels to where you touch on the screen.
+                        Projection proj = mapView.getProjection();
+                        //GeoPoint loc = proj.fromPixels((int)(ev.getX(ev.getPointerCount()-1)), (int)(ev.getY(ev.getPointerCount()-1)-TabHeightAdjustmentPixels-NotificationBarHeight));
+                        GeoPoint loc = proj.fromPixels((int)(ev.getX(ev.getPointerCount()-1)), (int)(ev.getY(ev.getPointerCount()-1)));
+                        int longitude=loc.getLongitudeE6();             
+                        int latitude=loc.getLatitudeE6();
+                        //*****************
+
+                        //**** here's where you add code to: 
+                        // put a marker on the map, save the point to your SQLite database, etc
+                        
+                        
+                		Drawable marker = getResources().getDrawable(R.drawable.usercontent);
+                		List<Overlay> overlays = mapView.getOverlays();
+                		MyOverlay usercontent = new MyOverlay(marker,mapView);
+                		OverlayItem overlayitem = new OverlayItem(loc, "New User Content", "Add a description");
+                		usercontent.addOverlay(overlayitem);
+                		overlays.add(usercontent);
+                		Location l = new Location("");
+                		l.setLatitude(latitude*1e6);
+                		l.setLongitude(longitude*1e6);
+                		usercontent.setCurrentLocation(l);
+                		mapView.postInvalidate();          
+
+                    }
+                }
+            }
+
+        }
+
+
+        return super.dispatchTouchEvent(ev);
+    }
+	
 
 }
 

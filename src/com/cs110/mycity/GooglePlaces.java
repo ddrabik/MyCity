@@ -22,7 +22,9 @@ public class GooglePlaces {
     //old Esther private static final String API_KEY = "AIzaSyDdYmuZ3JTlNVH58IN6dQCwoBEtmgmCe7c";
     //new Esther private static final String API_KEY = "AIzaSyB7ms8DPmJyfSwS4egC9S4BIOVwAcNB2I8";
     //Marian private static final String API_KEY = "AIzaSyDVTZDtGPbx5U1yxCQv_POaYwTvmqK7WDI";
+    //Esther private static final String API_KEY = "AIzaSyAiGVwHkWHPjX3JRk5YZ4-etmky1s2tvns";
     private static final String API_KEY = "AIzaSyDVTZDtGPbx5U1yxCQv_POaYwTvmqK7WDI";
+    
  
     // Google Places search url's
     private static final String PLACES_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/search/json?";
@@ -110,5 +112,6 @@ public class GooglePlaces {
             }
         });
     }
+    
 
 }

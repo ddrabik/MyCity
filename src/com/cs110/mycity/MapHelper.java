@@ -66,7 +66,7 @@ public class MapHelper {
 		  
 		   String xml =  String.format(Locale.US, "<trkpt lat=\"%f\" lon=\"%f\">\n<ele>0</ele><time>%s</time>\n</trkpt>", lat, lon, ele, time);
 			Log.d("MAPHELPER", "Sending " + lat + "," + lon + " to.." + buddy );
-
+			Log.d("MAPHELPER", "To:" + buddy + " -- " + xml);
 		   chatService.sendMessageTo(buddy, xml);
 	}
 
