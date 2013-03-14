@@ -19,11 +19,15 @@ public class GooglePlaces {
     private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
  
     // Google API Key
-    private static final String API_KEY = "AIzaSyDdYmuZ3JTlNVH58IN6dQCwoBEtmgmCe7c";
+    //old Esther private static final String API_KEY = "AIzaSyDdYmuZ3JTlNVH58IN6dQCwoBEtmgmCe7c";
+    //new Esther private static final String API_KEY = "AIzaSyB7ms8DPmJyfSwS4egC9S4BIOVwAcNB2I8";
+    //Marian private static final String API_KEY = "AIzaSyDVTZDtGPbx5U1yxCQv_POaYwTvmqK7WDI";
+    private static final String API_KEY = "AIzaSyDVTZDtGPbx5U1yxCQv_POaYwTvmqK7WDI";
  
     // Google Places search url's
     private static final String PLACES_SEARCH_URL = "https://maps.googleapis.com/maps/api/place/search/json?";
-      private double _latitude;
+    private static final String PLACES_DETAILS_URL = "https://maps.googleapis.com/maps/api/place/details/json?";
+    private double _latitude;
     private double _longitude;
     private double _radius;
 
@@ -65,6 +69,31 @@ public class GooglePlaces {
         }
  
     }
+    
+    public PlaceList details(String reference)
+    throws Exception {
+
+    	try {
+
+    		HttpRequestFactory httpRequestFactory = createRequestFactory(HTTP_TRANSPORT);
+    		HttpRequest request = httpRequestFactory
+    		.buildGetRequest(new GenericUrl(PLACES_DETAILS_URL));
+    		request.getUrl().put("key", API_KEY);
+    		request.getUrl().put("sensor", "false");
+    		request.getUrl().put("reference", reference);
+
+    		PlaceList list = request.execute().parseAs(PlaceList.class);
+    		// Check log cat for places response status
+    		Log.d("Places Status", "" + list.status);
+    		return list;
+
+    	} catch (HttpResponseException e) {
+    		Log.e("Error:", e.getMessage());
+    		return null;
+    	}
+    }
+
+   
  
     /**
      * Creating http request Factory

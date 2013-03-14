@@ -349,7 +349,9 @@ public class MappingActivity extends MapActivity implements LocationListener {
 					OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
 
 					buddyName = pairs.getKey();
-					buddyPin.addOverlay(overlayitem2);	
+					buddyPin.addOverlay(overlayitem2);
+					
+					
 
 
 					//set the chat button to chat with map buddies
@@ -418,19 +420,27 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			int lat = (int) (p.geometry.location.lat * 1e6);
 			int lng = (int) (p.geometry.location.lng * 1e6);
 
-			OverlayItem overlayItem = new OverlayItem(new GeoPoint(lat, lng),
-					p.name, p.vicinity);
+			try {
+				PlaceList pl = new GooglePlaces().details(p.reference);
+				OverlayItem overlayItem = new OverlayItem(new GeoPoint(lat, lng),
+						p.name, "Address: \n"+pl.result.formatted_address+"\n"+
+						"Phone number: "+pl.result.formatted_phone_number);
 
-			pOIs.addOverlay(overlayItem);
-			Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
-//			overlayChatButton.setVisibility(0);
-//			overlayChatButton.setEnabled(false);
-			
-			Log.d("POI", "Place: " + p.name+" "+lat+ " "+lng);
+				pOIs.addOverlay(overlayItem);
+				Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
+				//			overlayChatButton.setVisibility(0);
+				//			overlayChatButton.setEnabled(false);
+
+				Log.d("POI", "Place: " + p.name+" "+lat+ " "+lng);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		overlays.add(pOIs);
 		pOIs.setCurrentLocation(currentLocation);
+		mapView.postInvalidate();
 	}
 
 

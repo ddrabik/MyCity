@@ -11,5 +11,8 @@ public class PlaceList {
  
     @Key
     public List<Place> results;
+    
+    @Key
+    public Place result;
  
 }
