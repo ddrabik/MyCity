@@ -175,23 +175,23 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		});
 		
 		// only shout with buddies within radius
-//		
-//		btnShout = (Button) findViewById(R.id.shoutView_button);
-//		btnShout.setOnClickListener(new View.OnClickListener() {   
-//			@Override
-//			public void onClick(View v) {
-//				if (localBuddies == null)
-//					Toast.makeText(getApplicationContext(), "No buddies within range", Toast.LENGTH_SHORT).show();
-//				// only shout with buddies within radius
-//				else {
-//					Toast.makeText(getApplicationContext(), "Buddies within range...preparing shout", Toast.LENGTH_SHORT).show();
-//					Intent i = new Intent(v.getContext(), GroupChatView.class);
-//					GroupChatController.startGroupChat(localBuddies);
-//					startActivity(i);
-//				}
-//
-//			}
-//		});
+		
+		btnShout = (Button) findViewById(R.id.shoutView_button);
+		btnShout.setOnClickListener(new View.OnClickListener() {   
+			@Override
+			public void onClick(View v) {
+				if (localBuddies == null)
+					Toast.makeText(getApplicationContext(), "No buddies within range", Toast.LENGTH_SHORT).show();
+				// only shout with buddies within radius
+				else {
+					Toast.makeText(getApplicationContext(), "Buddies within range...preparing shout", Toast.LENGTH_SHORT).show();
+					Intent i = new Intent(v.getContext(), GroupChatView.class);
+					GroupChatController.startGroupChat(localBuddies);
+					startActivity(i);
+				}
+
+			}
+		});
 
 
 
@@ -626,7 +626,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			if (status.equals("OK")) {
 				// Successfully got places details
 				if (nearPlaces.results != null) {
-					//drawPOIs(nearPlaces);
+					drawPOIs(nearPlaces);
 				}
 			} else if (status.equals("ZERO_RESULTS")) {
 				// Zero results found

@@ -47,7 +47,7 @@ public class GroupChatController {
 	        for (String buddy:buddies)
 	        {
 	            Log.i("INVITE", buddy);
-	            muc.invite(buddy, "starting group chat...");
+	            //muc.invite(buddy, "starting group chat...");
 	        }
 	        sendInvitation(buddies);    
 	        join = false;
