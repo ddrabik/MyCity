@@ -59,7 +59,7 @@ public class ChatView extends Activity implements Observer {
 		send.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				sendMessageTo(buddy, getInputBoxText());
+				sendMessageTo(getInputBoxText());
 				resetInputTextBox();
 			}
 		});
@@ -81,8 +81,8 @@ public class ChatView extends Activity implements Observer {
 		return (EditText) this.findViewById(R.id.chatET);
 	}
 	
-	private void sendMessageTo(String buddy, String text) {
-		mService.sendMessageTo(buddy, text);
+	private void sendMessageTo(String text) {
+		controller.sendMessage(text);
 	}
 
 	/**
