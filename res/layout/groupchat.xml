@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:orientation="vertical" >
+
+  <LinearLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/groupbuddy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight=".1"
+        android:minWidth="70dp"
+        android:textStyle="bold" />
+
+  </LinearLayout>
+
+  <ListView
+      android:id="@+id/grouplistMessages"
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      android:layout_weight=".9"
+      android:scrollbars="horizontal"
+      android:stackFromBottom="true"
+      android:transcriptMode="alwaysScroll" />
+
+  <LinearLayout
+    android:id="@+id/grouplinearLayout2"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:orientation="horizontal" >
+
+    <EditText
+      android:id="@+id/groupchatET"
+      android:layout_width="0dip"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:gravity="top"
+      android:hint="Type to compose"
+      android:scrollHorizontally="true" >
+    </EditText>
+
+    <Button
+        android:id="@+id/groupsendBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Send"
+        android:textStyle="bold" />
+
+  </LinearLayout>
+</LinearLayout>
