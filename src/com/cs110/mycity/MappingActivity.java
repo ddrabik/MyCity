@@ -47,6 +47,9 @@ import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
 import com.readystatesoftware.*;
 
+
+import com.cs110.customoverlay.*;
+
 public class MappingActivity extends MapActivity implements LocationListener {
 
 	private MapController mapController;
@@ -356,6 +359,8 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		buddyLocations = mapHelper.getBuddyLocations();
 		Iterator<Map.Entry<String, Location>> it = buddyLocations.entrySet().iterator();
 
+		
+		
 		while(it.hasNext()){
 			Log.d("MAPACTIVITY","DRAWING PINS");
 			Drawable buddymarker = getResources().getDrawable(R.drawable.buddy);
@@ -400,28 +405,33 @@ public class MappingActivity extends MapActivity implements LocationListener {
                     Log.d("MAPACTIVITY", "localBuddies.size = " + localBuddies.size());
 					
                     
-                    
-					LayoutInflater inflater = this.getLayoutInflater();
-			        LinearLayout v = (LinearLayout)inflater.inflate(R.layout.balloon_overlay, null);
+//                    
+//					LayoutInflater inflater = this.getLayoutInflater();
+//			        LinearLayout v = (LinearLayout)inflater.inflate(R.layout.balloon_overlay, null);
 			        
+//                    LinearLayout v = (LinearLayout) findViewById(R.layout.balloon_overlay);
+                    
 					//set the chat button to chat with map buddies
-					Button overlayChatButton =(Button)v.findViewById(R.id.overlay_chat_button);
-					overlayChatButton.setVisibility(0); //To set visible
-					overlayChatButton.setOnClickListener(new View.OnClickListener() {   
-						@Override
-						public void onClick(View v) {
-					
-							Log.d("OVERLAY", "chatting attempt.......");
-						
-							Intent i = new Intent(v.getContext(), ChatView.class);
-							if(buddyName != null) {
-								i.putExtra("SELECTED_BUDDY", buddyName.substring(1));
-							}
-							startActivity(i);
-						} 
-					});
-			
-					
+				
+                    
+//                    Button overlayChatButton =(Button)findViewById(R.id.overlay_chat_button);
+//					
+//					overlayChatButton.setVisibility(View.VISIBLE); //To set visible
+//					overlayChatButton.setOnClickListener(new View.OnClickListener() {   
+//						@Override
+//						public void onClick(View v) {
+//					
+//							Log.d("OVERLAY", "chatting attempt.......");
+//						
+//							Intent i = new Intent(v.getContext(), ChatView.class);
+//							if(buddyName != null) {
+//								i.putExtra("SELECTED_BUDDY", buddyName.substring(1));
+//							}
+//							startActivity(i);
+//						} 
+//					});
+//			
+//					
 					Log.d("MAPACTIVITY", "Adding buddy pin!");
 					
 					overlays.add(buddyPin);
@@ -433,7 +443,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		}
 
 	}
-
+//
 //	public void onOverlayClick(View v){
 //		Log.d("OVERLAY", "chatting attempt.......");
 //		
@@ -476,9 +486,9 @@ public class MappingActivity extends MapActivity implements LocationListener {
 						"Website: "+pl.result.website);
 
 				pOIs.addOverlay(overlayItem);
-				Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
-				//			overlayChatButton.setVisibility(0);
-				//			overlayChatButton.setEnabled(false);
+//				Button overlayChatButton =(Button) findViewById(R.id.overlay_chat_button);
+//				overlayChatButton.setVisibility(View.INVISIBLE);
+//							overlayChatButton.setEnabled(false);
 
 				Log.d("POI", "Place: " + p.name+" "+lat+ " "+lng);
 			}
@@ -558,7 +568,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			if (status.equals("OK")) {
 				// Successfully got places details
 				if (nearPlaces.results != null) {
-					drawPOIs(nearPlaces);
+					//drawPOIs(nearPlaces);
 				}
 			} else if (status.equals("ZERO_RESULTS")) {
 				// Zero results found
@@ -726,7 +736,31 @@ public class MappingActivity extends MapActivity implements LocationListener {
                 		Drawable marker = getResources().getDrawable(R.drawable.usercontent);
                 		List<Overlay> overlays = mapView.getOverlays();
                 		MyOverlay usercontent = new MyOverlay(marker,mapView);
+                		
+                		
+                		
+                		//call a window that obtains info to put into the overlay item, from the user
+                		
+//                		
+                		
+                		//this is where the form is created
+                		Intent UCIntent = new Intent(this, UserContent.class);
+        				startActivity(UCIntent);
+        				
+        				
+        				//at this point the data should have been uploaded to the appengine
+        				//load data with api's
+        			
+                		
+                	
+        				
+        				//hard code values for overlay item
+        				
+        				//change to custom overlay item, then add it's attributes?
                 		OverlayItem overlayitem = new OverlayItem(loc, "New User Content", "Add a description");
+                		
+        				
+        				
                 		usercontent.addOverlay(overlayitem);
                 		overlays.add(usercontent);
                 		Location l = new Location("");
