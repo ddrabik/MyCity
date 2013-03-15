@@ -26,8 +26,8 @@ public class ChatController implements Observer {
 	}
 
 
-	public void sendMessageTo(String buddy, String text) {
-		
+	public void sendMessage(String text) {
+		mService.sendMessageTo(currentViewBuddy, text);
 	}
 	
 	public void conversationViewed() {

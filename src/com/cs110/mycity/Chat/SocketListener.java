@@ -91,6 +91,9 @@ public class SocketListener extends Service implements Subject {
 	}
 	
 	public ArrayList<String> getConversationWith(String buddy) {
+		if(buddy == null || conversationHistory.get(buddy) == null) {
+			return new ArrayList<String>();
+		}
 		return conversationHistory.get(buddy);
 	}
 
@@ -114,6 +117,7 @@ public class SocketListener extends Service implements Subject {
 	
 	private void setLastMessage(String msg) {
 		this.lastMessage = msg;
+		Log.d(TAG, this.lastMessage);
 	}
 	
 	private void setRecievedMessage(boolean b) {
@@ -150,7 +154,7 @@ public class SocketListener extends Service implements Subject {
 
 	public class LocalBinder extends Binder {
 
-		SocketListener getService() {
+		public SocketListener getService() {
 			return SocketListener.this;
 		}
 
@@ -282,6 +286,7 @@ public class SocketListener extends Service implements Subject {
 	}
 	
 	private void getInitialBuddyList() {
+		Log.d(TAG, "Getting inital buddy list");
 		Roster roster = connection.getRoster();
 		Collection<RosterEntry> entries = roster.getEntries();
 		for (RosterEntry entry : entries) {
