@@ -1,9 +1,21 @@
 package com.cs110.mycity;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import com.cs110.mycity.Chat.BuddyView;
+import com.google.android.maps.OverlayItem;
+import com.google.api.client.http.HttpResponse;
 
 import android.app.*;
 import android.content.Intent;
@@ -13,6 +25,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html.ImageGetter;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +37,7 @@ public class UserContent extends Activity {
 	private String info = "";
 	private ImageView image = null;
 
-
+	public static final String ITEM_URI = "http://myteamawesomecity.appspot.com/";
 	private static final int SELECT_PHOTO = 100;
 
 	Button btnImage;
@@ -168,6 +181,38 @@ public class UserContent extends Activity {
 //		System.out.println(yourSelectedImage.toString().toString());
 		System.out.println(title);
 		System.out.println(info);
+		
+		
+		
+        Thread t = new Thread() {
+            
+            private OverlayItem item;
+       
+            public void run() {
+              HttpClient client = new DefaultHttpClient();
+              HttpPost post = new HttpPost(ITEM_URI);
+       
+              try {
+                Log.d("updating", "Updating user content to the server");
+       
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(5);
+                nameValuePairs.add(new BasicNameValuePair("title", item.getTitle()));
+                nameValuePairs.add(new BasicNameValuePair("info", item.getSnippet()));
+                nameValuePairs.add(new BasicNameValuePair("longitude", ""+ (MappingActivity.loc.getLongitudeE6())));
+                nameValuePairs.add(new BasicNameValuePair("latitude", ""+ (MappingActivity.loc.getLatitudeE6())));
+                nameValuePairs.add(new BasicNameValuePair("action", "put"));
+                post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+       
+                org.apache.http.HttpResponse response = client.execute(post);
+       
+              } catch (IOException e) {
+                Log.d("AddFavorite", "IOException while trying to conect to GAE");
+              }
+            }
+          };
+          t.start();
+		
+		
 		
 		return true;
 	}

@@ -24,7 +24,8 @@ public class GooglePlaces {
     //Marian private static final String API_KEY = "AIzaSyDVTZDtGPbx5U1yxCQv_POaYwTvmqK7WDI";
     //Esther private static final String API_KEY = "AIzaSyAiGVwHkWHPjX3JRk5YZ4-etmky1s2tvns";
     //private static final String API_KEY = "AIzaSyDVTZDtGPbx5U1yxCQv_POaYwTvmqK7WDI";
-    private static final String API_KEY = "AIzaSyCMXatpJta-7yxEM5QH6GcDZ2jz2LE-OEQ";
+    //private static final String API_KEY = "AIzaSyCMXatpJta-7yxEM5QH6GcDZ2jz2LE-OEQ";
+    private static final String API_KEY = "AIzaSyAiGVwHkWHPjX3JRk5YZ4-etmky1s2tvns";
     
  
     // Google Places search url's
