@@ -67,8 +67,9 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
 import com.google.api.client.http.HttpResponse;
-import com.readystatesoftware.*;
 
+
+import com.readystatesoftware.*;
 import android.app.NotificationManager;
 
 //import com.cs110.mycity.R;
