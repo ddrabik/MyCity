@@ -105,7 +105,8 @@ public class GooglePlaces {
     public static HttpRequestFactory createRequestFactory(
             final HttpTransport transport) {
         return transport.createRequestFactory(new HttpRequestInitializer() {
-            public void initialize(HttpRequest request) {
+            @Override
+			public void initialize(HttpRequest request) {
                 GoogleHeaders headers = new GoogleHeaders();
                 headers.setApplicationName("AndroidHive-Places-Test");
                 request.setHeaders(headers);

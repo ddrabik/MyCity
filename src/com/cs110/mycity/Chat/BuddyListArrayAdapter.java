@@ -3,10 +3,6 @@ package com.cs110.mycity.Chat;
 import java.util.ArrayList;
 
 import com.cs110.mycity.R;
-import com.cs110.mycity.R.drawable;
-import com.cs110.mycity.R.id;
-import com.cs110.mycity.R.layout;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;

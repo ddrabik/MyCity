@@ -1,6 +1,5 @@
 package com.cs110.mycity.Chat;
 
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
@@ -10,14 +9,6 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import com.cs110.mycity.XMPPLogic;
-import com.cs110.mycity.R;
-
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.util.Log;
 
 

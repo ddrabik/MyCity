@@ -23,6 +23,6 @@ public class XMPPLogicTests extends TestCase {
 		XMPPConnection connection = null;	
 		connection = new XMPPConnection(connConfig);
 		xmpp.setConnection(connection);
-		assertEquals(connection, xmpp.getConnection());
+		assertEquals(connection, XMPPLogic.getConnection());
 	}
 }

@@ -20,18 +20,12 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
-import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.cs110.mycity.R;
 import com.cs110.mycity.XMPPLogic;
 
 public class SocketListener extends Service implements Subject {
@@ -62,6 +56,7 @@ public class SocketListener extends Service implements Subject {
 		}
 	}	
 
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 	}
@@ -90,6 +85,7 @@ public class SocketListener extends Service implements Subject {
 		updateHistory(chat, msg);
 	}
 
+	@Override
 	public ArrayList<String> getConversationWith(String buddy) {
 		if(buddy == null || conversationHistory.get(buddy) == null) {
 			return new ArrayList<String>();
@@ -97,10 +93,12 @@ public class SocketListener extends Service implements Subject {
 		return conversationHistory.get(buddy);
 	}
 
+	@Override
 	public String getLastMessage() {
 		return this.lastMessage;
 	}
 
+	@Override
 	public String getLastBuddy() {
 		return this.lastBuddy;
 	}
@@ -124,6 +122,7 @@ public class SocketListener extends Service implements Subject {
 		this.receivedMessage = b;
 	}
 
+	@Override
 	public boolean didRecieveMessage() {
 		return this.receivedMessage;
 	}
@@ -132,10 +131,12 @@ public class SocketListener extends Service implements Subject {
 		buddyStatuses.put(cleanUserString(user), new Integer(1));
 	}
 
+	@Override
 	public void registerObserver(Observer o) {
 		observers.add(o);
 	}
 
+	@Override
 	public void removeObserver(Observer o) {
 		Log.d(TAG, "removed observer");
 		observers.remove(o);
@@ -183,6 +184,7 @@ public class SocketListener extends Service implements Subject {
 
 	private MessageListener createMessageListener() {
 		MessageListener listener = new MessageListener() {
+			@Override
 			public void processMessage(Chat chat, Message message) {
 				if(message.getBody() != null && ! message.getBody().startsWith("<trkp")) {
 					setLatestMessageInfo(chat.getParticipant(), message.getBody());

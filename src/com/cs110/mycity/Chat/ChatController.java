@@ -1,10 +1,6 @@
 package com.cs110.mycity.Chat;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.util.Log;
 
 public class ChatController implements Observer {
 

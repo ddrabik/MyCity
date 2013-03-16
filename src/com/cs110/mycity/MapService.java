@@ -44,7 +44,8 @@ public class MapService extends Service {
 		mInstance = MapService.this;
 		mapHelper = MapHelper.getInstance();
 
-		connection = XMPPLogic.getInstance().getConnection();
+		XMPPLogic.getInstance();
+		connection = XMPPLogic.getConnection();
 		chatmanager = connection.getChatManager();
 		chatmanager.addChatListener(
 				new ChatManagerListener() {

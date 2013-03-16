@@ -13,10 +13,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.cs110.mycity.Chat.BuddyView;
 import com.google.android.maps.OverlayItem;
-import com.google.api.client.http.HttpResponse;
-
 import android.app.*;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,7 +21,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html.ImageGetter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -187,7 +183,8 @@ public class UserContent extends Activity {
             
             private OverlayItem item;
        
-            public void run() {
+            @Override
+			public void run() {
               HttpClient client = new DefaultHttpClient();
               HttpPost post = new HttpPost(ITEM_URI);
        

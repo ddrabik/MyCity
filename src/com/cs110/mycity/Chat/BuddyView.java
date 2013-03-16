@@ -25,6 +25,7 @@ public class BuddyView extends ListActivity implements Observer{
 	private ArrayList<String> buddyList = new ArrayList<String>();
 	private ListView listView;
 	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buddylist);

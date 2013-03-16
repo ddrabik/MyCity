@@ -1,16 +1,11 @@
 package com.cs110.mycity.Chat;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
-
 import org.jivesoftware.smack.PacketListener;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.util.StringUtils;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import android.app.Activity;
@@ -24,8 +19,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.cs110.mycity.R;
-import com.cs110.mycity.R.id;
-import com.cs110.mycity.R.layout;
 import com.cs110.mycity.XMPPLogic;
 
 public class GroupChatView extends Activity{
@@ -43,7 +36,8 @@ public class GroupChatView extends Activity{
     private boolean						activity_active;
     
     
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override
+	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groupchat);
         connection = XMPPLogic.getConnection();
@@ -181,7 +175,8 @@ public class GroupChatView extends Activity{
                 messages.add(parseMessage(msg));
             
                 runOnUiThread(new Runnable() {
-                    public void run() {
+                    @Override
+					public void run() {
                         setListAdapter();
                     }
                 });
