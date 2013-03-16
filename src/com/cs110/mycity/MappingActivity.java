@@ -15,6 +15,7 @@ import org.jivesoftware.smack.packet.Presence;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -26,6 +27,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -145,9 +148,6 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		drawBuddies();
 		animateToCurrentLocation();
 		
-		bNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-
 		bNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		btnChat = (Button) findViewById(R.id.chatView_button);
@@ -431,19 +431,31 @@ public class MappingActivity extends MapActivity implements LocationListener {
 						}
 						if (!localBuddies.contains(buddyName)) {
 							Log.d("MAPACTIVITY", "NOTIFY:" + buddyName + " is close!");
+							Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+							
+							Intent resultIntent = new Intent(this, MappingActivity.class);
+							TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+							stackBuilder.addParentStack(MappingActivity.class);
+							stackBuilder.addNextIntent(resultIntent);
+							PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+							
 							NotificationCompat.Builder bBuilder = new NotificationCompat.Builder(this)
 									.setSmallIcon(R.drawable.ic_launcher)
 									.setAutoCancel(true).setContentTitle("A friend is nearby!")
-									.setContentText(buddyName);
+									.setContentText(buddyName).setContentIntent(resultPendingIntent).setSound(uri);
+//									.setDefaults(Notification.DEFAULT_SOUND);
 							
+//							Intent intent = new Intent(this, MappingActivity.class);
+//							PendingIntent contentIntent = PendingIntent.getActivity(this, 1, intent, 0);
+//
+//							NotificationCompat.Builder bBuilder = new NotificationCompat.Builder(this)
+//									.setSmallIcon(R.drawable.ic_launcher)
+//									.setAutoCancel(true).setContentTitle("A friend is nearby!")
+//									.setContentText(buddyName).setSound(uri).setContentIntent(contentIntent);
 							
-//							Intent resultIntent = new Intent(this, MappingActivity.class);
-//							TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//							stackBuilder.addParentStack(MappingActivity.class);
-//							stackBuilder.addNextIntent(resultIntent);
-//							PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-//							bBuilder.setContentIntent(resultPendingIntent);
-							
+							if(bNotificationManager == null){
+								bNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+							}
 							bNotificationManager.notify(notifTag, notifCount++, bBuilder.build());
 							localBuddies.add(buddyName);
 						}
