@@ -20,12 +20,12 @@ import java.util.List;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.cs110.mycity.R;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
-import com.mapviewballoons.example.R;
 
 public class CustomMap extends MapActivity {
 
@@ -42,7 +42,7 @@ public class CustomMap extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        mapView = (MapView) findViewById(R.id.mapview);
+        mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setBuiltInZoomControls(true);
 		
 		mapOverlays = mapView.getOverlays();

@@ -14,7 +14,7 @@ public class XMPPLogic {
 	}
 
 	public void setConnection(XMPPConnection connection){
-		this.connection = connection;
+		XMPPLogic.connection = connection;
 	}
 
 	public static XMPPConnection getConnection() {

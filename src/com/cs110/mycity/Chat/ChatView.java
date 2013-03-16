@@ -29,6 +29,7 @@ public class ChatView extends Activity implements Observer {
 	ArrayList<String> history = new ArrayList<String>();
 	String buddy;
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 

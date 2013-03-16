@@ -1,7 +1,5 @@
 package com.cs110.mycity;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -11,21 +9,7 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.packet.Presence;
-import org.json.JSONObject;
-
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -38,21 +22,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.cs110.mycity.MainActivity.UserLoginTask;
-import com.cs110.mycity.MapContentView;
 import com.cs110.mycity.Chat.BuddyView;
-import com.cs110.mycity.Chat.ChatView;
 import com.cs110.mycity.Chat.GroupChatController;
 import com.cs110.mycity.Chat.GroupChatView;
 import com.google.android.maps.GeoPoint;
@@ -62,11 +38,6 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
-import com.google.api.client.http.HttpResponse;
-import com.readystatesoftware.*;
-
-
-import com.cs110.customoverlay.*;
 
 public class MappingActivity extends MapActivity implements LocationListener {
 
@@ -577,6 +548,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		/**
 		 * getting Places JSON
 		 * */
+		@Override
 		protected PlaceList doInBackground(String... args) {
 			// creating Places class object
 
@@ -611,6 +583,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		 * runOnUiThread(new Runnable()) to update UI from background thread,
 		 * otherwise you will get error
 		 * **/
+		@Override
 		protected void onPostExecute(PlaceList nearPlaces) {
 			//Log error
 			if(nearPlaces == null )

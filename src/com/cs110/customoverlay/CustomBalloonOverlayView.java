@@ -34,9 +34,6 @@ import com.google.android.maps.OverlayItem;
 import com.readystatesoftware.mapviewballoons.BalloonOverlayView;
 //import com.readystatesoftware.mapviewballoons.R;
 
-
-import com.mapviewballoons.example.R;
-
 //import mapviewballoons.example.R.*;
 
 
@@ -76,7 +73,8 @@ public class CustomBalloonOverlayView<Item extends OverlayItem> extends BalloonO
 		// bitmap results would normally be cached, but this is good enough for demo purpose.
 		image.setImageResource(R.drawable.icon);
 		new FetchImageTask() { 
-	        protected void onPostExecute(Bitmap result) {
+	        @Override
+			protected void onPostExecute(Bitmap result) {
 	            if (result != null) {
 	            	image.setImageBitmap(result);
 	            }
