@@ -22,6 +22,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.cs110.mycity.Chat.SocketListener;
+
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
@@ -79,6 +81,7 @@ public class MainActivity extends Activity {
 			}
 		});
 
+		
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
@@ -118,21 +121,21 @@ public class MainActivity extends Activity {
 //		mEmail = mEmailView.getText().toString();
 //		mPassword = mPasswordView.getText().toString();
 //		
-		mEmail = "cse11test@gmail.com";
-		mPassword = "cse11test1";
+//		mEmail = "cse11test@gmail.com";
+//		mPassword = "cse11test1";
 //		
 //		mEmail = mEmailView.getText().toString();
 //		mPassword = mPasswordView.getText().toString();
 
-//		mEmail = "cse110winter2013@gmail.com";
-//		mPassword = "billgriswold";
+		mEmail = "cse110winter2013@gmail.com";
+		mPassword = "billgriswold";
 //>>>>>>> 601fbd03dea0d099747a36ba723de4e575a2c5fd
 
 		
 		
 //		mEmail = "marianwangwang@gmail.com";
 //		mPassword = "wangwang";
-		
+//		
 		
 //		mEmail = "cse11test2@gmail.com.";
 //		mPassword = "cse11test1";
@@ -168,7 +171,7 @@ public class MainActivity extends Activity {
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
-			focusView.requestFocus();
+//			focusView.requestFocus();
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
@@ -264,7 +267,6 @@ public class MainActivity extends Activity {
 			Presence presence = new Presence(Presence.Type.available);
 			connection.sendPacket(presence);
 			XMPPLogic.getInstance().setConnection(connection);
-			startService(new Intent(MainActivity.this, ChatService.class));
 			return true;
 		} 
 
@@ -274,6 +276,8 @@ public class MainActivity extends Activity {
 			showProgress(false);
 
 			if (success) {
+				startService(new Intent(MainActivity.this, SocketListener.class));
+				startService(new Intent(MainActivity.this, MapService.class));
 				Intent myIntent  = new Intent(MainActivity.this, MappingActivity.class);
 				myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(myIntent);
@@ -293,7 +297,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	public void onDestroy(){
-		stopService(new Intent(MainActivity.this, ChatService.class));
+		stopService(new Intent(MainActivity.this, MapService.class));
 		super.onDestroy();
 	}
 }

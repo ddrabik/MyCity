@@ -15,12 +15,14 @@ public class MappingActivityTests extends ActivityInstrumentationTestCase2<Mappi
 		super("com.cs110.mycity", MappingActivity.class);
 	}
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		map = getActivity();
 
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}

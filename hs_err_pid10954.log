@@ -1,0 +1,412 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x007be89e, pid=10954, tid=3077490368
+#
+# JRE version: 6.0_24-b24
+# Java VM: OpenJDK Client VM (20.0-b12 mixed mode linux-x86 )
+# Derivative: IcedTea6 1.11.8
+# Distribution: CentOS release 6.3 (Final), package rhel-1.56.1.11.8.el6_3-i386
+# Problematic frame:
+# C  [libgdk-x11-2.0.so.0+0x7189e]  gdk_window_enable_synchronized_configure+0x1e
+#
+# If you would like to submit a bug report, please include
+# instructions how to reproduce the bug and visit:
+#   http://icedtea.classpath.org/bugzilla
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x08512800):  JavaThread "main" [_thread_in_native, id=10954, stack(0xbfc7b000,0xbfccb000)]
+
+siginfo:si_signo=SIGSEGV: si_errno=0, si_code=1 (SEGV_MAPERR), si_addr=0x0000000c
+
+Registers:
+EAX=0x00000000, EBX=0x00800d20, ECX=0x0862a048, EDX=0x0862a048
+ESP=0xbfcc7080, EBP=0xbfcc70b8, ESI=0x0862a0e0, EDI=0x085ff328
+EIP=0x007be89e, EFLAGS=0x00010212, CR2=0x0000000c
+
+Top of Stack: (sp=0xbfcc7080)
+0xbfcc7080:   07b3a064 07faa09c 00000005 00000000
+0xbfcc7090:   00753d20 07fa9ac8 0862a0e0 085ff328
+0xbfcc70a0:   bfcc7178 008a6c90 0862a048 07fa9ac8
+0xbfcc70b0:   0862a0e0 085ff328 bfcc7178 07dc9c01
+0xbfcc70c0:   00000000 bfcc710c 000002e2 07fa9ac8
+0xbfcc70d0:   0862a048 bfcc74d0 bfcc7138 07dc8b43
+0xbfcc70e0:   0862a048 085ff328 00000000 0022f66e
+0xbfcc70f0:   00000000 00000260 bfcc710c 0862a048 
+
+Instructions: (pc=0x007be89e)
+0x007be87e:   00 00 55 89 e5 8d 64 24 c8 89 5d f4 8b 45 08 e8
+0x007be88e:   27 2b fa ff 81 c3 8e 24 04 00 89 7d fc 89 75 f8
+0x007be89e:   8b 70 0c 89 45 e4 e8 27 da ff ff 85 f6 89 c7 74
+0x007be8ae:   1a 8b 06 85 c0 74 04 3b 38 74 1f 89 7c 24 04 89 
+
+Register to memory mapping:
+
+EAX=0x00000000 is an unknown value
+EBX=0x00800d20: <offset 0xb3d20> in /usr/lib/libgdk-x11-2.0.so.0 at 0x0074d000
+ECX=0x0862a048 is an unknown value
+EDX=0x0862a048 is an unknown value
+ESP=0xbfcc7080 is pointing into the stack for thread: 0x08512800
+EBP=0xbfcc70b8 is pointing into the stack for thread: 0x08512800
+ESI=0x0862a0e0 is an unknown value
+EDI=0x085ff328 is an unknown value
+
+
+Stack: [0xbfc7b000,0xbfccb000],  sp=0xbfcc7080,  free space=304k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libgdk-x11-2.0.so.0+0x7189e]  gdk_window_enable_synchronized_configure+0x1e
+C  [libgtk-x11-2.0.so.0+0x2aac01]  g_param_spec_object+0x2aac01
+C  [libgobject-2.0.so.0+0x17414]  g_cclosure_marshal_VOID__VOID+0x84
+C  [libgobject-2.0.so.0+0x7caa]  g_free+0x7caa
+C  [libgobject-2.0.so.0+0x966b]  g_closure_invoke+0x1ab
+C  [libgobject-2.0.so.0+0x1e8e0]  g_free+0x1e8e0
+C  [libgobject-2.0.so.0+0x20345]  g_signal_emit_valist+0x7c5
+C  [libgobject-2.0.so.0+0x207c7]  g_signal_emit+0x27
+C  [libgtk-x11-2.0.so.0+0x29697e]  gtk_widget_realize+0xde
+C  [libgtk-x11-2.0.so.0+0x2ab710]  g_param_spec_object+0x2ab710
+C  [libgobject-2.0.so.0+0x17414]  g_cclosure_marshal_VOID__VOID+0x84
+C  [libgobject-2.0.so.0+0x7caa]  g_free+0x7caa
+C  [libgobject-2.0.so.0+0x966b]  g_closure_invoke+0x1ab
+C  [libgobject-2.0.so.0+0x1e8e0]  g_free+0x1e8e0
+C  [libgobject-2.0.so.0+0x20345]  g_signal_emit_valist+0x7c5
+C  [libgobject-2.0.so.0+0x207c7]  g_signal_emit+0x27
+C  [libgtk-x11-2.0.so.0+0x297cc5]  gtk_widget_show+0xc5
+C  [libgtk-x11-2.0.so.0+0x297a0d]  gtk_widget_show_all+0x8d
+C  [eclipse_1307.so+0x6a4a]  showSplash+0x411
+C  [eclipse_1307.so+0x74ff]  Java_org_eclipse_equinox_launcher_JNIBridge__1show_1splash+0x56
+j  org.eclipse.equinox.launcher.JNIBridge._show_splash(Ljava/lang/String;)V+0
+j  org.eclipse.equinox.launcher.JNIBridge.showSplash(Ljava/lang/String;)Z+2
+j  org.eclipse.equinox.launcher.Main.handleSplash([Ljava/net/URL;)V+157
+j  org.eclipse.equinox.launcher.Main.basicRun([Ljava/lang/String;)V+116
+j  org.eclipse.equinox.launcher.Main.run([Ljava/lang/String;)I+4
+v  ~StubRoutines::call_stub
+V  [libjvm.so+0x1fa17a]  AsyncGetCallTrace+0x7504a
+V  [libjvm.so+0x2ff6a9]  numa_error+0x339
+V  [libjvm.so+0x1f937f]  AsyncGetCallTrace+0x7424f
+V  [libjvm.so+0x204c57]  JNI_CreateJavaVM+0x12d7
+V  [libjvm.so+0x21be5d]  JNI_CreateJavaVM+0x184dd
+C  [eclipse_1307.so+0x7fd1]  startJavaJNI+0x418
+C  [eclipse_1307.so+0x959c]  startJavaVM+0x24
+C  [eclipse_1307.so+0x30d6]  run+0x588
+C  [eclipse.exe+0x10ee]  strchr@@GLIBC_2.0+0x10ee
+C  [libc.so.6+0x16ce6]  __libc_start_main+0xe6
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  org.eclipse.equinox.launcher.JNIBridge._show_splash(Ljava/lang/String;)V+0
+j  org.eclipse.equinox.launcher.JNIBridge.showSplash(Ljava/lang/String;)Z+2
+j  org.eclipse.equinox.launcher.Main.handleSplash([Ljava/net/URL;)V+157
+j  org.eclipse.equinox.launcher.Main.basicRun([Ljava/lang/String;)V+116
+j  org.eclipse.equinox.launcher.Main.run([Ljava/lang/String;)I+4
+v  ~StubRoutines::call_stub
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x0857c000 JavaThread "Low Memory Detector" daemon [_thread_blocked, id=10967, stack(0x842af000,0x84300000)]
+  0x0857a000 JavaThread "C1 CompilerThread0" daemon [_thread_blocked, id=10966, stack(0x8442e000,0x844af000)]
+  0x08578c00 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=10965, stack(0x844af000,0x84500000)]
+  0x08569800 JavaThread "Finalizer" daemon [_thread_blocked, id=10964, stack(0x84803000,0x84854000)]
+  0x08568400 JavaThread "Reference Handler" daemon [_thread_blocked, id=10963, stack(0x84854000,0x848a5000)]
+=>0x08512800 JavaThread "main" [_thread_in_native, id=10954, stack(0xbfc7b000,0xbfccb000)]
+
+Other Threads:
+  0x08565400 VMThread [stack: 0x848a5000,0x84926000] [id=10962]
+  0x0857e400 WatcherThread [stack: 0x8422e000,0x842af000] [id=10968]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap
+ def new generation   total 4928K, used 1661K [0x84da0000, 0x852f0000, 0x8f840000)
+  eden space 4416K,  37% used [0x84da0000, 0x84f3f4c8, 0x851f0000)
+  from space 512K,   0% used [0x851f0000, 0x851f0000, 0x85270000)
+  to   space 512K,   0% used [0x85270000, 0x85270000, 0x852f0000)
+ tenured generation   total 10944K, used 0K [0x8f840000, 0x902f0000, 0xa4da0000)
+   the space 10944K,   0% used [0x8f840000, 0x8f840000, 0x8f840200, 0x902f0000)
+ compacting perm gen  total 131072K, used 3663K [0xa4da0000, 0xacda0000, 0xb55a0000)
+   the space 131072K,   2% used [0xa4da0000, 0xa5133fb8, 0xa5134000, 0xacda0000)
+No shared spaces configured.
+
+Code Cache  [0xb562b000, 0xb56b3000, 0xb762b000)
+ total_blobs=180 nmethods=54 adapters=62 free_code_cache=33007552 largest_free_block=0
+
+Dynamic libraries:
+001bc000-0034c000 r-xp 00000000 fd:00 41941      /lib/libc-2.12.so
+0034c000-0034e000 r--p 0018f000 fd:00 41941      /lib/libc-2.12.so
+0034e000-0034f000 rw-p 00191000 fd:00 41941      /lib/libc-2.12.so
+0034f000-00352000 rw-p 00000000 00:00 0 
+00352000-00433000 r-xp 00000000 fd:01 131984     /usr/lib/libstdc++.so.6.0.13
+00433000-00437000 r--p 000e0000 fd:01 131984     /usr/lib/libstdc++.so.6.0.13
+00437000-00439000 rw-p 000e4000 fd:01 131984     /usr/lib/libstdc++.so.6.0.13
+00439000-0043f000 rw-p 00000000 00:00 0 
+0043f000-00467000 r-xp 00000000 fd:00 42476      /lib/libm-2.12.so
+00467000-00468000 r--p 00027000 fd:00 42476      /lib/libm-2.12.so
+00468000-00469000 rw-p 00028000 fd:00 42476      /lib/libm-2.12.so
+00469000-0048b000 r-xp 00000000 fd:01 321885     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/libjava.so
+0048b000-0048d000 rw-p 00022000 fd:01 321885     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/libjava.so
+0048d000-0049f000 r-xp 00000000 fd:00 44320      /lib/libz.so.1.2.3
+0049f000-004a0000 r--p 00011000 fd:00 44320      /lib/libz.so.1.2.3
+004a0000-004a1000 rw-p 00012000 fd:00 44320      /lib/libz.so.1.2.3
+004a1000-004e8000 r-xp 00000000 fd:01 214518     /usr/lib/libpango-1.0.so.0.2800.1
+004e8000-004ea000 rw-p 00047000 fd:01 214518     /usr/lib/libpango-1.0.so.0.2800.1
+004ea000-004ec000 r-xp 00000000 fd:01 131219     /usr/lib/libXinerama.so.1.0.0
+004ec000-004ed000 rw-p 00001000 fd:01 131219     /usr/lib/libXinerama.so.1.0.0
+004ed000-004ef000 r-xp 00000000 fd:01 214296     /usr/lib/libXau.so.6.0.0
+004ef000-004f0000 rw-p 00001000 fd:01 214296     /usr/lib/libXau.so.6.0.0
+004f0000-004f3000 r-xp 00000000 fd:00 42474      /lib/libdl-2.12.so
+004f3000-004f4000 r--p 00002000 fd:00 42474      /lib/libdl-2.12.so
+004f4000-004f5000 rw-p 00003000 fd:00 42474      /lib/libdl-2.12.so
+004f5000-00505000 r-xp 00000000 fd:01 131218     /usr/lib/libXext.so.6.4.0
+00505000-00506000 rw-p 00010000 fd:01 131218     /usr/lib/libXext.so.6.4.0
+00506000-0050e000 r-xp 00000000 fd:01 131213     /usr/lib/libXrender.so.1.3.0
+0050e000-0050f000 rw-p 00008000 fd:01 131213     /usr/lib/libXrender.so.1.3.0
+00512000-0051d000 r-xp 00000000 fd:01 321904     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/libverify.so
+0051d000-0051e000 rw-p 0000b000 fd:01 321904     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/libverify.so
+0051e000-00522000 r-xp 00000000 fd:01 131910     /usr/lib/libXfixes.so.3.1.0
+00522000-00523000 rw-p 00003000 fd:01 131910     /usr/lib/libXfixes.so.3.1.0
+00523000-00526000 r-xp 00000000 fd:01 322652     /usr/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-bmp.so
+00526000-00527000 rw-p 00002000 fd:01 322652     /usr/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-bmp.so
+00535000-00578000 r-xp 00000000 fd:00 44322      /lib/libgobject-2.0.so.0.2200.5
+00578000-00579000 rw-p 00043000 fd:00 44322      /lib/libgobject-2.0.so.0.2200.5
+00579000-005ac000 r-xp 00000000 fd:01 213961     /usr/lib/libfontconfig.so.1.4.4
+005ac000-005ae000 rw-p 00032000 fd:01 213961     /usr/lib/libfontconfig.so.1.4.4
+005b3000-005c1000 r-xp 00000000 fd:01 131908     /usr/lib/libXi.so.6.1.0
+005c1000-005c2000 rw-p 0000d000 fd:01 131908     /usr/lib/libXi.so.6.1.0
+005c2000-005e0000 r-xp 00000000 fd:01 131938     /usr/lib/libgdk_pixbuf-2.0.so.0.1800.9
+005e0000-005e1000 rw-p 0001d000 fd:01 131938     /usr/lib/libgdk_pixbuf-2.0.so.0.1800.9
+005ee000-005fa000 r-xp 00000000 00:14 12763141   /software/common/eclipseide-3.6/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.x86_1.1.0.v20100503/eclipse_1307.so
+005fa000-005fb000 rw-p 0000c000 00:14 12763141   /software/common/eclipseide-3.6/eclipse/plugins/org.eclipse.equinox.launcher.gtk.linux.x86_1.1.0.v20100503/eclipse_1307.so
+0060d000-00610000 r-xp 00000000 fd:00 44323      /lib/libgmodule-2.0.so.0.2200.5
+00610000-00611000 rw-p 00002000 fd:00 44323      /lib/libgmodule-2.0.so.0.2200.5
+00613000-0061c000 r-xp 00000000 fd:01 131911     /usr/lib/libXcursor.so.1.0.2
+0061c000-0061d000 rw-p 00008000 fd:01 131911     /usr/lib/libXcursor.so.1.0.2
+0061f000-00626000 r-xp 00000000 fd:01 131909     /usr/lib/libXrandr.so.2.2.0
+00626000-00627000 rw-p 00006000 fd:01 131909     /usr/lib/libXrandr.so.2.2.0
+0062b000-00631000 r-xp 00000000 fd:01 321905     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/libzip.so
+00631000-00632000 rw-p 00005000 fd:01 321905     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/libzip.so
+0063c000-0063e000 r-xp 00000000 fd:01 131912     /usr/lib/libXcomposite.so.1.0.0
+0063e000-0063f000 rw-p 00001000 fd:01 131912     /usr/lib/libXcomposite.so.1.0.0
+00641000-00643000 r-xp 00000000 fd:01 131916     /usr/lib/libXdamage.so.1.1.0
+00643000-00644000 rw-p 00001000 fd:01 131916     /usr/lib/libXdamage.so.1.1.0
+00646000-00663000 r-xp 00000000 fd:00 44326      /lib/libgcc_s-4.4.6-20120305.so.1
+00663000-00664000 rw-p 0001d000 fd:00 44326      /lib/libgcc_s-4.4.6-20120305.so.1
+00664000-0074c000 r-xp 00000000 fd:00 42069      /lib/libglib-2.0.so.0.2200.5
+0074c000-0074d000 rw-p 000e8000 fd:00 42069      /lib/libglib-2.0.so.0.2200.5
+0074d000-007ff000 r-xp 00000000 fd:01 131940     /usr/lib/libgdk-x11-2.0.so.0.1800.9
+007ff000-00802000 rw-p 000b2000 fd:01 131940     /usr/lib/libgdk-x11-2.0.so.0.1800.9
+00802000-00880000 r-xp 00000000 fd:01 131214     /usr/lib/libcairo.so.2.10800.8
+00880000-00882000 rw-p 0007e000 fd:01 131214     /usr/lib/libcairo.so.2.10800.8
+00892000-008b0000 r-xp 00000000 fd:00 41934      /lib/ld-2.12.so
+008b0000-008b1000 r--p 0001d000 fd:00 41934      /lib/ld-2.12.so
+008b1000-008b2000 rw-p 0001e000 fd:00 41934      /lib/ld-2.12.so
+008b2000-009e6000 r-xp 00000000 fd:01 214689     /usr/lib/libX11.so.6.3.0
+009e6000-009ea000 rw-p 00133000 fd:01 214689     /usr/lib/libX11.so.6.3.0
+009ea000-00a13000 r-xp 00000000 fd:01 214522     /usr/lib/libpangoft2-1.0.so.0.2800.1
+00a13000-00a14000 rw-p 00029000 fd:01 214522     /usr/lib/libpangoft2-1.0.so.0.2800.1
+00a1e000-00a35000 r-xp 00000000 fd:00 41965      /lib/libpthread-2.12.so
+00a35000-00a36000 r--p 00016000 fd:00 41965      /lib/libpthread-2.12.so
+00a36000-00a37000 rw-p 00017000 fd:00 41965      /lib/libpthread-2.12.so
+00a37000-00a39000 rw-p 00000000 00:00 0 
+00a39000-00ae8000 r-xp 00000000 fd:00 44325      /lib/libgio-2.0.so.0.2200.5
+00ae8000-00aea000 rw-p 000af000 fd:00 44325      /lib/libgio-2.0.so.0.2200.5
+00aea000-00b07000 r-xp 00000000 fd:01 214437     /usr/lib/libxcb.so.1.1.0
+00b07000-00b08000 rw-p 0001c000 fd:01 214437     /usr/lib/libxcb.so.1.1.0
+00b10000-00b27000 r-xp 00000000 fd:00 42483      /lib/libnsl-2.12.so
+00b27000-00b28000 r--p 00016000 fd:00 42483      /lib/libnsl-2.12.so
+00b28000-00b29000 rw-p 00017000 fd:00 42483      /lib/libnsl-2.12.so
+00b29000-00b2b000 rw-p 00000000 00:00 0 
+00b2c000-00b33000 r-xp 00000000 fd:00 44267      /lib/librt-2.12.so
+00b33000-00b34000 r--p 00006000 fd:00 44267      /lib/librt-2.12.so
+00b34000-00b35000 rw-p 00007000 fd:00 44267      /lib/librt-2.12.so
+00b35000-00bc9000 r-xp 00000000 fd:01 213280     /usr/lib/libfreetype.so.6.3.22
+00bc9000-00bcd000 rw-p 00094000 fd:01 213280     /usr/lib/libfreetype.so.6.3.22
+00bcd000-00bf3000 r-xp 00000000 fd:00 44319      /lib/libexpat.so.1.5.2
+00bf3000-00bf5000 rw-p 00025000 fd:00 44319      /lib/libexpat.so.1.5.2
+00c0c000-00c17000 r-xp 00000000 fd:01 214520     /usr/lib/libpangocairo-1.0.so.0.2800.1
+00c17000-00c18000 rw-p 0000a000 fd:01 214520     /usr/lib/libpangocairo-1.0.so.0.2800.1
+00c18000-00c7e000 r-xp 00000000 fd:01 213713     /usr/lib/libpixman-1.so.0.18.4
+00c7e000-00c81000 rw-p 00066000 fd:01 213713     /usr/lib/libpixman-1.so.0.18.4
+00c81000-00ca8000 r-xp 00000000 fd:01 214280     /usr/lib/libpng12.so.0.49.0
+00ca8000-00ca9000 rw-p 00026000 fd:01 214280     /usr/lib/libpng12.so.0.49.0
+00ca9000-00cbe000 r-xp 00000000 fd:00 44265      /lib/libresolv-2.12.so
+00cbe000-00cbf000 ---p 00015000 fd:00 44265      /lib/libresolv-2.12.so
+00cbf000-00cc0000 r--p 00015000 fd:00 44265      /lib/libresolv-2.12.so
+00cc0000-00cc1000 rw-p 00016000 fd:00 44265      /lib/libresolv-2.12.so
+00cc1000-00cc3000 rw-p 00000000 00:00 0 
+00cc3000-00ce0000 r-xp 00000000 fd:00 44324      /lib/libselinux.so.1
+00ce0000-00ce1000 r--p 0001c000 fd:00 44324      /lib/libselinux.so.1
+00ce1000-00ce2000 rw-p 0001d000 fd:00 44324      /lib/libselinux.so.1
+00ce2000-00cff000 r-xp 00000000 fd:01 131982     /usr/lib/libatk-1.0.so.0.2809.1
+00cff000-00d01000 rw-p 0001c000 fd:01 131982     /usr/lib/libatk-1.0.so.0.2809.1
+00da0000-00da1000 r-xp 00000000 00:00 0          [vdso]
+00da1000-011d0000 r-xp 00000000 fd:01 321872     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/client/libjvm.so
+011d0000-011f4000 rw-p 0042f000 fd:01 321872     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/client/libjvm.so
+011f4000-0160b000 rw-p 00000000 00:00 0 
+07b1f000-07fa6000 r-xp 00000000 fd:01 131983     /usr/lib/libgtk-x11-2.0.so.0.1800.9
+07fa6000-07fac000 rw-p 00486000 fd:01 131983     /usr/lib/libgtk-x11-2.0.so.0.1800.9
+07fac000-07fad000 rw-p 00000000 00:00 0 
+08048000-0804c000 r-xp 00000000 00:14 2999123    /software/common/eclipseide-3.6/eclipse/eclipse.exe
+0804c000-0804d000 rw-p 00003000 00:14 2999123    /software/common/eclipseide-3.6/eclipse/eclipse.exe
+0850a000-08670000 rw-p 00000000 00:00 0          [heap]
+83e00000-83e21000 rw-p 00000000 00:00 0 
+83e21000-83f00000 ---p 00000000 00:00 0 
+83f68000-83fcb000 rw-p 00000000 00:00 0 
+83fcb000-84000000 r--s 00000000 fd:02 138182     /var/db/nscd/hosts
+84000000-84021000 rw-p 00000000 00:00 0 
+84021000-84100000 ---p 00000000 00:00 0 
+84100000-84141000 rw-p 00000000 00:00 0 
+84141000-84200000 ---p 00000000 00:00 0 
+8422e000-8422f000 ---p 00000000 00:00 0 
+8422f000-842af000 rw-p 00000000 00:00 0 
+842af000-842b2000 ---p 00000000 00:00 0 
+842b2000-84300000 rw-p 00000000 00:00 0 
+84300000-84321000 rw-p 00000000 00:00 0 
+84321000-84400000 ---p 00000000 00:00 0 
+8442e000-84431000 ---p 00000000 00:00 0 
+84431000-844af000 rw-p 00000000 00:00 0 
+844af000-844b2000 ---p 00000000 00:00 0 
+844b2000-84500000 rw-p 00000000 00:00 0 
+84500000-84521000 rw-p 00000000 00:00 0 
+84521000-84600000 ---p 00000000 00:00 0 
+84600000-84621000 rw-p 00000000 00:00 0 
+84621000-84700000 ---p 00000000 00:00 0 
+84700000-84721000 rw-p 00000000 00:00 0 
+84721000-84800000 ---p 00000000 00:00 0 
+84803000-84806000 ---p 00000000 00:00 0 
+84806000-84854000 rw-p 00000000 00:00 0 
+84854000-84857000 ---p 00000000 00:00 0 
+84857000-848a5000 rw-p 00000000 00:00 0 
+848a5000-848a6000 ---p 00000000 00:00 0 
+848a6000-84959000 rw-p 00000000 00:00 0 
+84959000-84aeb000 r--s 037cc000 fd:01 306607     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/rt.jar
+84aeb000-84b2c000 rw-p 00000000 00:00 0 
+84b2c000-84b70000 rw-p 00000000 00:00 0 
+84b70000-84b76000 rw-p 00000000 00:00 0 
+84b76000-84c1b000 rw-p 00000000 00:00 0 
+84c1b000-84c1e000 rw-p 00000000 00:00 0 
+84c1e000-84c70000 rw-p 00000000 00:00 0 
+84c70000-84c76000 rw-p 00000000 00:00 0 
+84c76000-84d1b000 rw-p 00000000 00:00 0 
+84d1b000-84d5b000 rw-p 00000000 00:00 0 
+84d5b000-84d9f000 rw-p 00000000 00:00 0 
+84d9f000-852f0000 rw-p 00000000 00:00 0 
+852f0000-8f840000 rw-p 00000000 00:00 0 
+8f840000-902f0000 rw-p 00000000 00:00 0 
+902f0000-a4da0000 rw-p 00000000 00:00 0 
+a4da0000-acda0000 rw-p 00000000 00:00 0 
+acda0000-b55a0000 rw-p 00000000 00:00 0 
+b55a0000-b55a7000 r--s 00000000 fd:01 213261     /usr/lib/gconv/gconv-modules.cache
+b55a7000-b55ab000 r--s 0007e000 fd:01 308050     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/jsse.jar
+b55ab000-b55ae000 rw-p 00000000 00:00 0 
+b55ae000-b562b000 rw-p 00000000 00:00 0 
+b562b000-b56b3000 rwxp 00000000 00:00 0 
+b56b3000-b762b000 rw-p 00000000 00:00 0 
+b762b000-b76ec000 r--s 00000000 fd:02 138180     /var/db/nscd/passwd
+b76ec000-b76ee000 rw-p 00000000 00:00 0 
+b76f0000-b76f2000 r--s 0000a000 00:14 10961204   /software/common/eclipseide-3.6/eclipse/plugins/org.eclipse.equinox.launcher_1.1.0.v20100507.jar
+b76f2000-b76fb000 r--s 00065000 fd:01 316216     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/ext/gnome-java-bridge.jar
+b76fb000-b76fd000 r--s 0000f000 fd:01 313688     /usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/ext/pulse-java.jar
+b76fd000-b7705000 rw-s 00000000 fd:04 153221     /tmp/hsperfdata_zjivani/10954
+b7705000-b7706000 rw-p 00000000 00:00 0 
+b7706000-b7707000 r--p 00000000 00:00 0 
+b7707000-b7708000 rw-p 00000000 00:00 0 
+bfc7b000-bfc7e000 ---p 00000000 00:00 0 
+bfc7f000-bfccb000 rw-p 00000000 00:00 0          [stack]
+
+VM Arguments:
+jvm_args: -Dorg.eclipse.swt.browser.XULRunnerPath=/usr/lib/xulrunner-2 -XX:PermSize=128m -XX:MaxPermSize=264m 
+java_command: <unknown>
+Launcher Type: generic
+
+Environment Variables:
+_JAVA_OPTIONS=-XX:PermSize=128m -XX:MaxPermSize=264m
+PATH=/bin:/usr/bin:/usr/lib/qt-3.3/bin:/software/common/mutt/bin:/software/common/matlab/bin:/software/common/jdk/bin:/software/common/eclipse/eclipse:/software/common/TeXLive/bin/i386-linux:/software/common/AcroRead/bin:/software/nonrdist/bin:/software/common/bin:/software/common/Modules/3.2.9/bin:/usr/local/bin:/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/sbin:/software/common/pine/bin
+LD_LIBRARY_PATH=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386/client:/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0/jre/lib/i386:
+SHELL=/bin/bash
+DISPLAY=localhost:32.0
+
+Signal Handlers:
+SIGSEGV: [libjvm.so+0x3d4c10], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGBUS: [libjvm.so+0x3d4c10], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGFPE: [libjvm.so+0x3027b0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGPIPE: SIG_IGN, sa_mask[0]=0x00001000, sa_flags=0x10000000
+SIGXFSZ: [libjvm.so+0x3027b0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGILL: [libjvm.so+0x3027b0], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGUSR1: SIG_DFL, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGUSR2: [libjvm.so+0x301f50], sa_mask[0]=0x00000000, sa_flags=0x10000004
+SIGHUP: [libjvm.so+0x304530], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGINT: SIG_IGN, sa_mask[0]=0x00000000, sa_flags=0x00000000
+SIGTERM: [libjvm.so+0x304530], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+SIGQUIT: [libjvm.so+0x304530], sa_mask[0]=0x7ffbfeff, sa_flags=0x10000004
+
+
+---------------  S Y S T E M  ---------------
+
+OS:CentOS release 6.3 (Final)
+
+uname:Linux 2.6.32-279.22.1.el6.i686 #1 SMP Wed Feb 6 00:31:03 UTC 2013 i686
+libc:glibc 2.12 NPTL 2.12 
+rlimit: STACK 10240k, CORE 0k, NPROC 1024, NOFILE 4096, AS infinity
+load average:0.55 0.54 0.81
+
+/proc/meminfo:
+MemTotal:        8181364 kB
+MemFree:         3102848 kB
+Buffers:          301192 kB
+Cached:          4011828 kB
+SwapCached:            0 kB
+Active:          2020228 kB
+Inactive:        2793536 kB
+Active(anon):     500868 kB
+Inactive(anon):     1480 kB
+Active(file):    1519360 kB
+Inactive(file):  2792056 kB
+Unevictable:           0 kB
+Mlocked:               0 kB
+HighTotal:       7481340 kB
+HighFree:        2949464 kB
+LowTotal:         700024 kB
+LowFree:          153384 kB
+SwapTotal:       2046968 kB
+SwapFree:        2046968 kB
+Dirty:               284 kB
+Writeback:             0 kB
+AnonPages:        500496 kB
+Mapped:           136592 kB
+Shmem:              1676 kB
+Slab:             198812 kB
+SReclaimable:     172648 kB
+SUnreclaim:        26164 kB
+KernelStack:        4392 kB
+PageTables:        14600 kB
+NFS_Unstable:          0 kB
+Bounce:                0 kB
+WritebackTmp:          0 kB
+CommitLimit:     6137648 kB
+Committed_AS:    1815852 kB
+VmallocTotal:     122880 kB
+VmallocUsed:        5432 kB
+VmallocChunk:     105696 kB
+HugePages_Total:       0
+HugePages_Free:        0
+HugePages_Rsvd:        0
+HugePages_Surp:        0
+Hugepagesize:       2048 kB
+DirectMap4k:        8184 kB
+DirectMap2M:      899072 kB
+
+
+CPU:total 4 (1 cores per cpu, 1 threads per core) family 6 model 13 stepping 3, cmov, cx8, fxsr, mmx, sse, sse2, sse3, lzcnt
+
+Memory: 4k page, physical 8181364k(3102848k free), swap 2046968k(2046968k free)
+
+vm_info: OpenJDK Client VM (20.0-b12) for linux-x86 JRE (1.6.0_24-b24), built on Feb 20 2013 11:06:03 by "mockbuild" with gcc 4.4.6 20120305 (Red Hat 4.4.6-4)
+
+time: Thu Mar  7 17:10:26 2013
+elapsed time: 2 seconds
+

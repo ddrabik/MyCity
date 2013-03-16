@@ -4,24 +4,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
-import org.jivesoftware.smack.Roster;
-import org.jivesoftware.smack.RosterEntry;
-import org.jivesoftware.smack.XMPPConnection;
-import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.packet.Presence;
-
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-
 import android.annotation.SuppressLint;
-import android.graphics.Point;
 import android.location.Location;
 import android.util.Log;
 
@@ -30,14 +18,11 @@ public class MapHelper {
 
 	private static final String TAG = "MAPHELPER";
 	
-
 	private static MapHelper mInstance = null;
 
 	private static HashMap<String, Location> buddyLocations = new HashMap<String, Location>();
 	
-	private static ChatService chatService = ChatService.getInstance();
-	
-
+	private static MapService chatService = MapService.getInstance();
 
 	public synchronized static MapHelper getInstance() {
 		if(mInstance==null){
@@ -81,7 +66,7 @@ public class MapHelper {
 		  
 		   String xml =  String.format(Locale.US, "<trkpt lat=\"%f\" lon=\"%f\">\n<ele>0</ele><time>%s</time>\n</trkpt>", lat, lon, ele, time);
 			Log.d("MAPHELPER", "Sending " + lat + "," + lon + " to.." + buddy );
-
+			Log.d("MAPHELPER", "To:" + buddy + " -- " + xml);
 		   chatService.sendMessageTo(buddy, xml);
 	}
 
@@ -175,6 +160,7 @@ public class MapHelper {
 		
 		MappingActivity mapAct = MappingActivity.getInstance();
 		mapAct.drawCurrPositionOverlay();
+		mapAct.drawBuddies();
 		
 	}
 	
