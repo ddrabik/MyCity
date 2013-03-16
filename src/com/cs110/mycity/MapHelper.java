@@ -156,8 +156,6 @@ public class MapHelper {
 		System.out.println("ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
 		
 		
-		
-		
 	}
 	
 	

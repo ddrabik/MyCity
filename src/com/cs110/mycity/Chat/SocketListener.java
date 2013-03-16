@@ -37,17 +37,17 @@ import com.cs110.mycity.XMPPLogic;
 public class SocketListener extends Service implements Subject {
 	private static final String TAG = "SOCKETLISTENER";
 	private XMPPConnection connection = XMPPLogic.getInstance().getConnection();
-	
+
 	private ArrayList<Observer> observers = new ArrayList<Observer>();
 
 	private HashMap<String, Chat> chatDB = new HashMap<String, Chat>();
 	private HashMap<String, ArrayList<String>> conversationHistory = new HashMap<String, ArrayList<String>>();
 	private HashMap<String, Integer> buddyStatuses = new HashMap<String, Integer>();
-	
+
 	private String lastMessage = "";
 	private String lastBuddy = "";
 	private Boolean receivedMessage = false;
-	
+
 	private NotificationObserver notificationObserver;
 
 	@Override
@@ -78,7 +78,7 @@ public class SocketListener extends Service implements Subject {
 		Collections.sort(list);
 		return list;
 	}
-	
+
 	public void sendMessageTo(String buddy, String text) {
 		Message msg = createMessage(buddy, connection.getUser(), text);
 		Chat chat = getChat(buddy);
@@ -89,7 +89,7 @@ public class SocketListener extends Service implements Subject {
 		}
 		updateHistory(chat, msg);
 	}
-	
+
 	public ArrayList<String> getConversationWith(String buddy) {
 		if(buddy == null || conversationHistory.get(buddy) == null) {
 			return new ArrayList<String>();
@@ -100,50 +100,50 @@ public class SocketListener extends Service implements Subject {
 	public String getLastMessage() {
 		return this.lastMessage;
 	}
-	
+
 	public String getLastBuddy() {
 		return this.lastBuddy;
 	}
-	
+
 	private void setLatestMessageInfo(String buddy, String text) {
 		setRecievedMessage(true);
 		setLastBuddy(cleanUserString(buddy));
 		setLastMessage(text);
 	}
-	
+
 	private void setLastBuddy(String buddy) {
 		this.lastBuddy = buddy;
 	}
-	
+
 	private void setLastMessage(String msg) {
 		this.lastMessage = msg;
 		Log.d(TAG, this.lastMessage);
 	}
-	
+
 	private void setRecievedMessage(boolean b) {
 		this.receivedMessage = b;
 	}
-	
+
 	public boolean didRecieveMessage() {
 		return this.receivedMessage;
 	}
-	
+
 	public void resetBuddyPresence(String user) {
 		buddyStatuses.put(cleanUserString(user), new Integer(1));
 	}
-	
+
 	public void registerObserver(Observer o) {
 		observers.add(o);
 	}
-	
+
 	public void removeObserver(Observer o) {
 		Log.d(TAG, "removed observer");
 		observers.remove(o);
 	}
-	
+
 	private void notifyObservers() {
 		Iterator<Observer> it = observers.iterator();
-		
+
 		while(it.hasNext()) {
 			Observer o = it.next();
 			o.update(this);
@@ -180,7 +180,7 @@ public class SocketListener extends Service implements Subject {
 			}
 		});
 	}
-	
+
 	private MessageListener createMessageListener() {
 		MessageListener listener = new MessageListener() {
 			public void processMessage(Chat chat, Message message) {
@@ -193,7 +193,7 @@ public class SocketListener extends Service implements Subject {
 		};
 		return listener;
 	}
-	
+
 	private void updateChat(Chat chat, Message message) {
 		String participant = chat.getParticipant();
 		addChatToDB(participant, chat);
@@ -207,7 +207,7 @@ public class SocketListener extends Service implements Subject {
 		notifyObservers();
 		Log.d(TAG, "History updated, added " + cleanUserString(user) + ": " + message.getBody());
 	}
-	
+
 	private ArrayList<String> getConversationHistory(String user) {
 		ArrayList<String> chatHistory = conversationHistory.get(user);
 		if(chatHistory == null) {
@@ -216,7 +216,7 @@ public class SocketListener extends Service implements Subject {
 		}
 		return conversationHistory.get(user);
 	}
-	
+
 	private String cleanUserString(String user) {
 		if( user.lastIndexOf('/') > 0 ) {
 			return user.substring(0, user.indexOf('/'));
@@ -232,7 +232,7 @@ public class SocketListener extends Service implements Subject {
 		}
 		return chat;
 	}
-	
+
 	private Chat createNewChat(String buddy) {
 		Log.d(TAG, "new chat created");
 		ChatManager manager = connection.getChatManager();
@@ -240,12 +240,12 @@ public class SocketListener extends Service implements Subject {
 		addChatToDB(buddy, chat);
 		return chat;
 	}
-	
+
 	private void addChatToDB(String buddy, Chat chat) {
 		Log.d(TAG, "Adding chat with participant " + buddy);
 		chatDB.put(cleanUserString(buddy), chat);
 	}
-	
+
 	private Message createMessage(String to, String from, String text) {
 		Message msg = new Message();
 		msg.setTo(to);
@@ -280,11 +280,11 @@ public class SocketListener extends Service implements Subject {
 			buddyStatuses.put(user, status);
 		}
 	}
-	
+
 	private Integer convertPresenceToStatusCode(Presence p) {
 		return (p.isAvailable()) ? new Integer(1) : new Integer(2);
 	}
-	
+
 	private void getInitialBuddyList() {
 		Log.d(TAG, "Getting inital buddy list");
 		Roster roster = connection.getRoster();
@@ -301,4 +301,3 @@ public class SocketListener extends Service implements Subject {
 	}
 
 }
-

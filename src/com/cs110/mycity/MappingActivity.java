@@ -1,5 +1,6 @@
 package com.cs110.mycity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,15 +11,26 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Presence;
+import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -36,13 +48,17 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.cs110.mycity.MainActivity.UserLoginTask;
 import com.cs110.mycity.MapContentView;
 import com.cs110.mycity.Chat.BuddyView;
 import com.cs110.mycity.Chat.ChatView;
+import com.cs110.mycity.Chat.GroupChatController;
+import com.cs110.mycity.Chat.GroupChatView;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -50,9 +66,13 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import com.google.android.maps.Projection;
+import com.google.api.client.http.HttpResponse;
 import com.readystatesoftware.*;
 
+import android.app.NotificationManager;
+
 //import com.cs110.mycity.R;
+
 
 public class MappingActivity extends MapActivity implements LocationListener {
 
@@ -62,9 +82,13 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private GeoPoint currentPoint;
 	private Location currentLocation = null;
 	private static Location helperLocation = null;
-	private Button btnUpdate;
+
+	private Button btnChat;
+	private Button btnShout;
 	private MyOverlay currPos = null;
 	private MyOverlay buddyPin = null;
+	private XMPPConnection connection;
+	private String useremail;
 
 	private HashMap<String, Location> buddyLocations;
 	private Set<String> localBuddies;
@@ -75,7 +99,11 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	private MapHelper mapHelper = MapHelper.getInstance();
 
 	private static String buddyName;
-	private double radius = 1.5; // km
+
+	private double radius = 1.5; //km
+	
+	public static GeoPoint loc;
+	
 	
 	private NotificationManager bNotificationManager;
 	private int notifCount;
@@ -124,7 +152,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mInstance = MappingActivity.this;
-
+		
 		setContentView(R.layout.activity_mapping);
 		mapView = (MapView) findViewById(R.id.mapView);
 		mapView.setBuiltInZoomControls(true);
@@ -137,15 +165,38 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		
 		bNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		btnUpdate = (Button) findViewById(R.id.chatView_button);
-		btnUpdate.setOnClickListener(new View.OnClickListener() {
+
+		bNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		btnChat = (Button) findViewById(R.id.chatView_button);
+		btnChat.setOnClickListener(new View.OnClickListener() {   
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(v.getContext(), BuddyView.class);
 				startActivity(i);
 			}
 		});
+		
+		// only shout with buddies within radius
+		
+		btnShout = (Button) findViewById(R.id.shoutView_button);
+		btnShout.setOnClickListener(new View.OnClickListener() {   
+			@Override
+			public void onClick(View v) {
+				if (localBuddies == null)
+					Toast.makeText(getApplicationContext(), "No buddies within range", Toast.LENGTH_SHORT).show();
+				// only shout with buddies within radius
+				else {
+					Toast.makeText(getApplicationContext(), "Buddies within range...preparing shout", Toast.LENGTH_SHORT).show();
+					Intent i = new Intent(v.getContext(), GroupChatView.class);
+					GroupChatController.startGroupChat(localBuddies);
+					startActivity(i);
+				}
 
+			}
+		});
+		
+		
 		// new thread to run in background that shouts locations and waits for
 		// response?
 		int delay = 1000;// 5*10000; // delay for 1 sec.
@@ -208,6 +259,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 			locBroad = null;
 		}
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -344,6 +396,9 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		buddyLocations = mapHelper.getBuddyLocations();
 		Iterator<Map.Entry<String, Location>> it = buddyLocations.entrySet().iterator();
 		Log.d("MAPACTIVITY", "DRAWING PINS");
+
+
+
 		Drawable buddymarker = getResources().getDrawable(R.drawable.buddy);
 		overlays.remove(buddyPin);
 		if (buddyPin == null)
@@ -352,6 +407,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		buddyPin.clear();
 
 		while (it.hasNext()) {
+
 			Map.Entry<String, Location> pairs = it.next();
 			if (pairs.getValue() != null) {
 				GeoPoint point = new GeoPoint((int) (pairs.getValue().getLatitude() * 1E6), (int) (pairs.getValue().getLongitude() * 1E6));
@@ -359,12 +415,13 @@ public class MappingActivity extends MapActivity implements LocationListener {
 				if (point != null) {
 					Log.d("MAPACTIVITY", "GEOPOINT IS: " + point.toString());
 
-					OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Here I am!");
+					OverlayItem overlayitem2 = new OverlayItem(point, pairs.getKey(), "Tap to chat with me!");
 
 					buddyName = pairs.getKey();
 					buddyPin.addOverlay(overlayitem2);
 
 					Log.d("MAPACTIVITY", "buddyName = " + buddyName);
+
 
 					// check if location is within radius
 					double earthR = 6371; // km
@@ -376,6 +433,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 					double a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2)
 							+ Math.sin(longDiff / 2) * Math.sin(longDiff / 2)
 							* Math.cos(lat1) * Math.cos(lat2);
+
 					double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 					double d = earthR * c;
 
@@ -421,6 +479,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 							R.layout.balloon_overlay, null);
 
 //		
+
 					Log.d("MAPACTIVITY", "Adding buddy pin!");
 
 					overlays.add(buddyPin);
@@ -432,19 +491,6 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		}
 
 	}
-
-	// public void onOverlayClick(View v){
-	// Log.d("OVERLAY", "chatting attempt.......");
-	//
-	// //Andy: test buddyName. I think it might just be the last buddy added to
-	// the map.
-	// //i don't know where we get and where we can store the proper value
-	// Intent i = new Intent(v.getContext(), ChatView.class);
-	// if(buddyName != null) {
-	// i.putExtra("SELECTED_BUDDY", buddyName);
-	// }
-	// startActivity(i);
-	// }
 
 	public synchronized static MappingActivity getInstance() {
 		if (mInstance == null) {
@@ -474,9 +520,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 								+ "Website: " + pl.result.website);
 
 				pOIs.addOverlay(overlayItem);
-				
-				
-				
+
 
 				Log.d("POI", "Place: " + p.name + " " + lat + " " + lng);
 			} catch (Exception e) {
@@ -587,41 +631,6 @@ public class MappingActivity extends MapActivity implements LocationListener {
 
 	}
 
-	// public void addUserContent(GeoPoint point) {
-	// Drawable marker = getResources().getDrawable(R.drawable.usercontent);
-	// List<Overlay> overlays = mapView.getOverlays();
-	// MyOverlay usercontent = new MyOverlay(marker,mapView);
-	// OverlayItem overlayitem = new OverlayItem(point, "New User Content",
-	// "Add a description");
-	// usercontent.addOverlay(overlayitem);
-	// overlays.add(usercontent);
-	// Location l = new Location("");
-	// l.setLatitude((point.getLatitudeE6() * 1e6));
-	// l.setLongitude(point.getLongitudeE6() * 1e6);
-	// usercontent.setCurrentLocation(l);
-	// //mapView.postInvalidate();
-	// }
-	//
-	//
-	// class OnLongPressListener implements MapContentView.OnLongpressListener {
-	//
-	// @Override
-	// public void onLongpress(MapView view, GeoPoint longpressLocation) {
-	//
-	// final GeoPoint gp = longpressLocation;
-	//
-	// runOnUiThread(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	// MappingActivity.this.addUserContent(gp);
-	// }
-	//
-	// });
-	//
-	// }
-	//
-	// }
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {

@@ -22,7 +22,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:text="Chat" />
-        
+
+        <Button
+            android:id="@+id/shoutView_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="Shout" />
 
     </FrameLayout>
 </LinearLayout>
