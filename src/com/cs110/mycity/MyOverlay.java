@@ -85,6 +85,13 @@ public class MyOverlay extends BalloonItemizedOverlay<OverlayItem>{
 		case 4: {
 			Toast.makeText(mContext, "User Content Selected " + type,
 					Toast.LENGTH_LONG).show();
+			
+			Intent i = new Intent();
+			i.setClass(mContext, UserContent.class);
+//			i.putExtra("SELECTED_BUDDY", item.getTitle());
+            mContext.startActivity(i);
+			
+			
 			return true;
 		}
 		}

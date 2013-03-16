@@ -40,18 +40,17 @@ public class UserContent extends Activity {
 	Button btnTitle;
 	Button btnInfo;
 	Button btnSubmit;
-
+	
 	EditText titleBox;
 	EditText infoBox;
-
+	
 	Bitmap yourSelectedImage;
 	
 	Handler handler;
 
 
 	//Database push will initiate until the submit button is hit, no earlier.
-	//Will also need to happen in a baclground thread to not lock the UI while uploading.
-
+	//Will also need to happen in a background thread to not lock the UI while uploading.
 
 
 	@Override
@@ -62,8 +61,6 @@ public class UserContent extends Activity {
 
 
 		btnImage = (Button) findViewById(R.id.image_button);
-		btnTitle = (Button) findViewById(R.id.title_button);
-		btnInfo = (Button) findViewById(R.id.info_button);
 		btnSubmit = (Button) findViewById(R.id.submit_button);
 
 		titleBox = (EditText) findViewById(R.id.edit_Title);
@@ -78,42 +75,11 @@ public class UserContent extends Activity {
 				//make image button text change to indicate image has been selected
 				//store image to variable
 
-				//				Intent i = new Intent(v.getContext(), BuddyView.class);
-				//				startActivity(i);
-
 				Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 				photoPickerIntent.setType("image/*");
 				startActivityForResult(photoPickerIntent, SELECT_PHOTO);  
-
-			}
-
-
-		});
-
-		btnTitle.setOnClickListener(new View.OnClickListener() {   
-			@Override
-			public void onClick(View v) {
-				///extract title from box into variable
-
-				String title1 = titleBox.getText().toString();
-				System.out.println(" TITLE SET AS: " + title1);
-				setTitleString(title1);
-
 			}
 		});
-
-		btnInfo.setOnClickListener(new View.OnClickListener() {   
-			@Override
-			public void onClick(View v) {
-				///extract info from box into variable
-				String title1 = infoBox.getText().toString();
-				System.out.println(" INFO SET AS: " + title1);
-				setInfoString(title1);
-			}
-		});
-
-
-
 
 		btnSubmit.setOnClickListener(new View.OnClickListener() {   
 			@Override
@@ -145,7 +111,7 @@ public class UserContent extends Activity {
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					System.out.println("IMAGE FILE NOT FOUND???? CHECK TRACE");
+					System.out.println("IMAGE FILE NOT FOUND within phone ???? CHECK TRACE");
 					imageStream = null;
 				}
 				yourSelectedImage = BitmapFactory.decodeStream(imageStream);
@@ -172,11 +138,15 @@ public class UserContent extends Activity {
 		 * String info
 		*/
 		
+		String title1 = titleBox.getText().toString();
+		setTitleString(title1);
+		String info1 = infoBox.getText().toString();
+		setInfoString(title1);
+		
 		System.out.println("SUBMITTING DATA TO APPENGINE...");
-//		System.out.println(yourSelectedImage.toString().toString());
+		
 		System.out.println(title);
 		System.out.println(info);
-		
 		
 		
         Thread t = new Thread() {
@@ -196,7 +166,7 @@ public class UserContent extends Activity {
                 nameValuePairs.add(new BasicNameValuePair("info", item.getSnippet()));
                 nameValuePairs.add(new BasicNameValuePair("longitude", ""+ (MappingActivity.loc.getLongitudeE6())));
                 nameValuePairs.add(new BasicNameValuePair("latitude", ""+ (MappingActivity.loc.getLatitudeE6())));
-                nameValuePairs.add(new BasicNameValuePair("action", "put"));
+//                nameValuePairs.add(new BasicNameValuePair("action", "put"));
                 post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
        
                 org.apache.http.HttpResponse response = client.execute(post);
