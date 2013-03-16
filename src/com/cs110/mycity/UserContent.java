@@ -71,7 +71,6 @@ public class UserContent extends Activity {
 
 
 
-
 		btnImage.setOnClickListener(new View.OnClickListener() {   
 			@Override
 			public void onClick(View v) {
