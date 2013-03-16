@@ -35,11 +35,19 @@ public class BuddyView extends ListActivity implements Observer{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Intent i = new Intent(view.getContext(), ChatView.class);
+				
 				if(buddyList.get(position) != null) {
-					i.putExtra("SELECTED_BUDDY", buddyList.get(position).substring(1));
+					Intent i;
+					if(buddyList.get(position).startsWith("2")) {
+						i = new Intent(view.getContext(), GroupChatView.class);
+						i.putExtra("ROOM_MEMBERS", buddyList.get(position).substring(1));
+					} else {
+						i = new Intent(view.getContext(), ChatView.class);
+						i.putExtra("SELECTED_BUDDY", buddyList.get(position).substring(1));
+					}
+					startActivity(i);
 				}
-				startActivity(i);
+				
 			}
 		}); 
 		

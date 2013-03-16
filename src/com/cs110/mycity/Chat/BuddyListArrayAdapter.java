@@ -44,7 +44,7 @@ public class BuddyListArrayAdapter extends ArrayAdapter<String> {
 		holder.text.setText(s.substring(1));
 		if (s.startsWith("0")){
 			holder.image.setImageResource(R.drawable.buddy_new_message);
-		} else if (s.startsWith("1")) {
+		} else if (s.startsWith("1") || s.startsWith("2")) {
 			holder.image.setImageResource(R.drawable.buddy_avaliable);
 		} else {
 			holder.image.setImageResource(R.drawable.buddy_unavaliable);

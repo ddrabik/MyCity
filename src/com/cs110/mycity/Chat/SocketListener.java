@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.jivesoftware.smack.Chat;
 import org.jivesoftware.smack.ChatManager;
 import org.jivesoftware.smack.ChatManagerListener;
+import org.jivesoftware.smack.Connection;
 import org.jivesoftware.smack.MessageListener;
 import org.jivesoftware.smack.Roster;
 import org.jivesoftware.smack.RosterEntry;
@@ -19,6 +20,8 @@ import org.jivesoftware.smack.XMPPConnection;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smackx.muc.InvitationListener;
+import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import android.app.Service;
 import android.content.Intent;
@@ -36,7 +39,7 @@ public class SocketListener extends Service implements Subject {
 
 	private HashMap<String, Chat> chatDB = new HashMap<String, Chat>();
 	private HashMap<String, ArrayList<String>> conversationHistory = new HashMap<String, ArrayList<String>>();
-	private HashMap<String, Integer> buddyStatuses = new HashMap<String, Integer>();
+	private static HashMap<String, Integer> buddyStatuses = new HashMap<String, Integer>();
 
 	private String lastMessage = "";
 	private String lastBuddy = "";
@@ -52,6 +55,7 @@ public class SocketListener extends Service implements Subject {
 			addRosterListener(connection.getRoster());
 			notificationObserver = new NotificationObserver(this);
 			registerObserver(notificationObserver);
+			createInvitationListener();
 			getInitialBuddyList();
 		}
 	}	
@@ -102,6 +106,10 @@ public class SocketListener extends Service implements Subject {
 	public String getLastBuddy() {
 		return this.lastBuddy;
 	}
+	
+	public static void addUserToBuddyList(String name, Integer status) {
+		buddyStatuses.put(name, status);
+	}
 
 	private void setLatestMessageInfo(String buddy, String text) {
 		setRecievedMessage(true);
@@ -128,7 +136,7 @@ public class SocketListener extends Service implements Subject {
 	}
 
 	public void resetBuddyPresence(String user) {
-		buddyStatuses.put(cleanUserString(user), new Integer(1));
+		addUserToBuddyList(cleanUserString(user), new Integer(1));
 	}
 
 	@Override
@@ -181,15 +189,29 @@ public class SocketListener extends Service implements Subject {
 			}
 		});
 	}
+	
+	private void createInvitationListener() {
+		 MultiUserChat.addInvitationListener(connection, new InvitationListener() {
+	          public void invitationReceived(Connection conn, String room, String inviter, String reason, String password, Message msg) {
+	        	  Log.d(TAG, "Received invitation");
+	        	  GroupChatController.joinGroupChat(room);
+	          }
+	      });
+	}
 
 	private MessageListener createMessageListener() {
 		MessageListener listener = new MessageListener() {
 			@Override
 			public void processMessage(Chat chat, Message message) {
 				if(message.getBody() != null && ! message.getBody().startsWith("<trkp")) {
-					setLatestMessageInfo(chat.getParticipant(), message.getBody());
-					setBuddyPresence(chat.getParticipant(), new Integer(0));
-					updateChat(chat, message);
+					if(message.getFrom().contains("private-chat")) {
+						String room = message.getFrom();
+						GroupChatController.joinGroupChat(room);
+					} else {
+						setLatestMessageInfo(chat.getParticipant(), message.getBody());
+						setBuddyPresence(chat.getParticipant(), new Integer(0));
+						updateChat(chat, message);
+					}
 				}
 			}
 		};
@@ -279,12 +301,12 @@ public class SocketListener extends Service implements Subject {
 	private void setBuddyPresence(String user, Integer status) {
 		user = cleanUserString(user);
 		if(buddyStatuses.get(user) == null || !buddyStatuses.get(user).equals(new Integer(0))) {
-			buddyStatuses.put(user, status);
+			addUserToBuddyList(user, status);
 		}
 	}
 
 	private Integer convertPresenceToStatusCode(Presence p) {
-		return (p.isAvailable()) ? new Integer(1) : new Integer(2);
+		return (p.isAvailable()) ? new Integer(1) : new Integer(3);
 	}
 
 	private void getInitialBuddyList() {
