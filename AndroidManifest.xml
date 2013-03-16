@@ -54,6 +54,26 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="com.cs110.mycity.Chat.GroupChatView"
+            android:label="@string/app_name"
+            android:parentActivityName="com.cs110.mycity.MappingActivity" >
+           
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        
+         <activity
+            android:name="com.cs110.mycity.UserContent"
+            android:label="@string/app_name"
+            android:parentActivityName="com.cs110.mycity.MappingActivity" >
+           
+             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".Chat.SocketListener"

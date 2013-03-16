@@ -160,6 +160,7 @@ public class MapHelper {
 		
 		MappingActivity mapAct = MappingActivity.getInstance();
 		mapAct.drawCurrPositionOverlay();
+		mapAct.drawBuddies();
 		
 	}
 	

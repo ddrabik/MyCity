@@ -36,15 +36,15 @@ public class ChatView extends Activity implements Observer {
 		this.buddy = getPartnerName();
 		setConversationPartnerBanner("Chatting with ");
 		setInputTextBoxHint("Chat ");
-		
+
 		activateSendButton();
 	}
-	
+
 	private void setConversationPartnerBanner(String prefix) {
 		TextView buddyTextView = (TextView) this.findViewById(R.id.buddy);
 		buddyTextView.setText(prefix + this.buddy);
 	}
-	
+
 	private String getPartnerName() {
 		String buddy = "A buddy";
 		Bundle extras = getIntent().getExtras();
@@ -53,7 +53,7 @@ public class ChatView extends Activity implements Observer {
 		}
 		return buddy;
 	}
-	
+
 	private void activateSendButton() {
 		Button send = (Button) this.findViewById(R.id.sendBtn);
 		send.setOnClickListener(new View.OnClickListener() {
@@ -64,23 +64,23 @@ public class ChatView extends Activity implements Observer {
 			}
 		});
 	}
-	
+
 	private String getInputBoxText() {
-		return getInputBox().getText().toString(); 
+		return getInputBox().getText().toString();
 	}
-	
+
 	private void resetInputTextBox() {
 		getInputBox().setText("");
 	}
-	
+
 	private void setInputTextBoxHint(String hint) {
 		getInputBox().setHint("Chat ");
 	}
-	
+
 	private EditText getInputBox() {
 		return (EditText) this.findViewById(R.id.chatET);
 	}
-	
+
 	private void sendMessageTo(String text) {
 		controller.sendMessage(text);
 	}
@@ -104,7 +104,7 @@ public class ChatView extends Activity implements Observer {
 			mService = null;
 		}
 	};
-	
+
 	@Override
 	public void update(Subject s) {
 		Log.d(TAG, "Updating view");
@@ -115,13 +115,13 @@ public class ChatView extends Activity implements Observer {
 				display();
 			}
 		});
-		
+
 	}
-	
+
 	private void display() {
 		setListAdapter(this.history);
 	}
-	
+
 	private void setListAdapter(ArrayList<String> history) {
 		if(history != null) {
 			ListView listview = (ListView) this.findViewById(R.id.listMessages);
@@ -136,7 +136,7 @@ public class ChatView extends Activity implements Observer {
 		bindService(new Intent(this, SocketListener.class), mConn,
 				Context.BIND_AUTO_CREATE);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		mService.removeObserver(ChatView.this);
