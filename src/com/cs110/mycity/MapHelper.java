@@ -17,6 +17,8 @@ import android.util.Log;
 public class MapHelper {
 
 	private static final String TAG = "MAPHELPER";
+
+	private static final double THRESHOLD = 0.05;
 	
 	private static MapHelper mInstance = null;
 
@@ -115,54 +117,53 @@ public class MapHelper {
 	
 	public void receivedLocationFrom(String buddy, String xml){
 		
-		
 		Log.d("MAPHELPER", "Receiving locations. ..");
 
 		//parse xml here, turn into a location, put into hashmap.
-
 		String lats = xml.substring(xml.indexOf("lat") + 5,xml.indexOf("lon") - 2 );
 		String lons = xml.substring(xml.indexOf("lon") + 5,xml.indexOf('>') - 1 );
-//		String timeStamp = xml.substring(xml.indexOf('T') + 1, xml.indexOf('Z'));
-
-		Log.d("MAPHELPER", "  THE LAT IS " + lats);
-		Log.d("MAPHELPER", "  THE LON IS " + lons);
-//		Log.d("MAPHELPER", "  THE TIME IS " + timeStamp);
 		
-
+		Log.d("MAPHELPER", "  THE LON IS " + lons);
+		Log.d("MAPHELPER", "  THE LAT IS " + lats);
+		
 		double lat = Double.parseDouble(lats);
 		double lon = Double.parseDouble(lons);
-		
-		Log.d("MAPHELPER", "XXX lat and lon = " + lat + ',' + lon);
-		
-		
-		
 		Location buddyLoc = new Location("");
 		
 		buddyLoc.setLatitude(lat);
 		buddyLoc.setLongitude(lon);
 		
 		
-		
-		
-		buddyLocations.put(buddy, buddyLoc);
-		
-		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy + buddyLoc.getTime() );
-		System.out.println("ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
-		
-		
-
-		if(!buddyLocations.containsKey(buddy)){
-		//reply to the user, our current location.
-			Location currentLocation = MappingActivity.getLocationStatic();
-			sendMessageTo(buddy, currentLocation);
+		//check if we have seen buddy before
+		if(buddyLocations.containsKey(buddy)){
+			Log.d("MAPHELPER", "buddy moved location!");
+			//if buddy moved, delete pin and redraw
+			if(	 didBuddyMove(buddyLoc, buddyLocations.get(buddy))  ){
+				buddyLocations.remove(buddy);
+			}
 		}
 		
+		buddyLocations.put(buddy, buddyLoc);
+		Location currentLocation = MappingActivity.getLocationStatic();
+		sendMessageTo(buddy, currentLocation);
 		
 		MappingActivity mapAct = MappingActivity.getInstance();
 		mapAct.drawCurrPositionOverlay();
+		mapAct.drawBuddies();
+		
+		
+		Log.d("MAPHELPER", "ADDED LOCATION: " + lat + ',' + lon + "   " + buddy );
+		System.out.println("ADDED LOCATION: " + lat + ',' + lon + "   " + buddy);
+		
+		
+		
 		
 	}
 	
+	
+	private boolean didBuddyMove(Location l1, Location l2){
+		return l1.getLatitude() != l2.getLatitude() || (l1.getLongitude() != l2.getLongitude()) ;
+	}
 	
 	
 	public HashMap<String, Location> getBuddyLocations(){

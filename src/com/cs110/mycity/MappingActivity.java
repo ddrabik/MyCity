@@ -324,6 +324,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		Drawable mymarker = getResources().getDrawable(R.drawable.mylocation);
 
 		currPos = new MyOverlay(mymarker, mapView);
+		currPos.setType(1);
 
 		if (currentPoint != null) {
 			OverlayItem overlayitem = new OverlayItem(currentPoint, "Me",
@@ -347,6 +348,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 		overlays.remove(buddyPin);
 		if (buddyPin == null)
 			buddyPin = new MyOverlay(buddymarker, mapView);
+		buddyPin.setType(2);
 		buddyPin.clear();
 
 		while (it.hasNext()) {
@@ -406,32 +408,19 @@ public class MappingActivity extends MapActivity implements LocationListener {
 							localBuddies.add(buddyName);
 						}
 					} else {
-						localBuddies.remove(buddyName);
+						if (localBuddies != null) {
+							localBuddies.remove(buddyName);
+						}
 					}
-
-					Log.d("MAPACTIVITY", "localBuddies.size = " + localBuddies.size());
-
+					if (localBuddies != null) {
+						localBuddies.remove(buddyName);
+						Log.d("MAPACTIVITY", "localBuddies.size = " + localBuddies.size());
+					}
 					LayoutInflater inflater = this.getLayoutInflater();
 					LinearLayout v = (LinearLayout) inflater.inflate(
 							R.layout.balloon_overlay, null);
 
-					// set the chat button to chat with map buddies
-					Button overlayChatButton = (Button) v.findViewById(R.id.overlay_chat_button);
-					overlayChatButton.setVisibility(0); // To set visible
-					overlayChatButton.setOnClickListener(new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-
-									Log.d("OVERLAY", "chatting attempt.......");
-
-									Intent i = new Intent(v.getContext(),ChatView.class);
-									if (buddyName != null) {
-										i.putExtra("SELECTED_BUDDY",buddyName.substring(1));
-									}
-									startActivity(i);
-								}
-							});
-
+//		
 					Log.d("MAPACTIVITY", "Adding buddy pin!");
 
 					overlays.add(buddyPin);
@@ -467,6 +456,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 	public void drawPOIs(PlaceList nearPlaces) {
 		Drawable marker = getResources().getDrawable(R.drawable.city_icon);
 		MyOverlay pOIs = new MyOverlay(marker, mapView);
+		pOIs.setType(3);
 		List overlays = mapView.getOverlays();
 
 		// loop through each place
@@ -484,9 +474,9 @@ public class MappingActivity extends MapActivity implements LocationListener {
 								+ "Website: " + pl.result.website);
 
 				pOIs.addOverlay(overlayItem);
-				Button overlayChatButton = (Button) findViewById(R.id.overlay_chat_button);
-				// overlayChatButton.setVisibility(0);
-				// overlayChatButton.setEnabled(false);
+				
+				
+				
 
 				Log.d("POI", "Place: " + p.name + " " + lat + " " + lng);
 			} catch (Exception e) {
@@ -775,6 +765,7 @@ public class MappingActivity extends MapActivity implements LocationListener {
 								R.drawable.usercontent);
 						List<Overlay> overlays = mapView.getOverlays();
 						MyOverlay usercontent = new MyOverlay(marker, mapView);
+						usercontent.setType(4);
 						OverlayItem overlayitem = new OverlayItem(loc,
 								"New User Content", "Add a description");
 						usercontent.addOverlay(overlayitem);
