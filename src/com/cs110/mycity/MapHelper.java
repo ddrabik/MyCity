@@ -38,9 +38,15 @@ public class MapHelper {
 	}
 	
 	
-
-	//call to send messages
+	/**
+	 * @param buddy, location
+	 * @precondition: location must not be null
+	 * @precondition: buddy must be a valid email address
+	 * call to send messages
+	 */
 	public void sendMessageTo(String buddy, Location location) {
+		assert buddy.contains("@") && buddy.contains(".");
+		assert location != null;
 		   
 		Log.d("MAPHELPER", "Sending message...");
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,9 +77,15 @@ public class MapHelper {
 			Log.d("MAPHELPER", "To:" + buddy + " -- " + xml);
 		   chatService.sendMessageTo(buddy, xml);
 	}
-
-
+	
+	/**
+	 * @param location
+	 * @precondition: location must not be null
+	 */
 	public void sendToAllBuddies(Location location){ //put on hold
+		assert location != null;
+		assert chatService.getBuddyList() != null;
+		
 		Log.d("MAPHELPER", "Sending to all...");
 
 		
@@ -91,8 +103,12 @@ public class MapHelper {
 	}
 	
 	
-	
+	/**
+	 * @param location
+	 * @precondition: location must not be null
+	 */
 	public void sendToAllUsers(Location location){
+		assert location != null;
 		Log.d("MAPHELPER", "Sending to all...");
 
 		
@@ -114,9 +130,19 @@ public class MapHelper {
 	
 	
 	
-	
+	/**
+	 * @param buddy: email address of the buddy that sent the message  
+	 * @param xml: information sent through an xml string which includes location and 
+	 * @precondition buddy must be a valid email address
+	 * @precondition xml must be in correct format 
+	 * 					ex: 	<trkpt lat="46.57608333" lon="8.89241667">
+	 *							<ele>2376</ele><time>2007-10-14T10:09:57Z</time>
+	 *							</trkpt>
+	 */
 	public void receivedLocationFrom(String buddy, String xml){
-		
+		assert buddy != null && xml != null;
+		assert buddy.contains("@") && buddy.contains(".");
+		assert xml.endsWith("</trkpt>");
 		Log.d("MAPHELPER", "Receiving locations. ..");
 
 		//parse xml here, turn into a location, put into hashmap.
@@ -163,10 +189,13 @@ public class MapHelper {
 		return l1.getLatitude() != l2.getLatitude() || (l1.getLongitude() != l2.getLongitude()) ;
 	}
 	
-	
+	/**
+	 * @return HashMap where key = buddy's email and value = buddy's location
+	 * @ensure does not return null
+	 */
 	public HashMap<String, Location> getBuddyLocations(){
+		assert buddyLocations != null;
 		return buddyLocations;
-		
 	}
 	
 
