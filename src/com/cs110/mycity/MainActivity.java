@@ -118,29 +118,9 @@ public class MainActivity extends Activity {
 		mPasswordView.setError(null);
 
 		// Store values at the time of the login attempt.
-//		mEmail = mEmailView.getText().toString();
-//		mPassword = mPasswordView.getText().toString();
-//		
-//		mEmail = "cse11test@gmail.com";
-//		mPassword = "cse11test1";
-//		
-//		mEmail = mEmailView.getText().toString();
-//		mPassword = mPasswordView.getText().toString();
+		mEmail = mEmailView.getText().toString();
+		mPassword = mPasswordView.getText().toString();
 
-		mEmail = "cse110winter2013@gmail.com";
-		mPassword = "billgriswold";
-//>>>>>>> 601fbd03dea0d099747a36ba723de4e575a2c5fd
-
-		
-		
-//		mEmail = "marianwangwang@gmail.com";
-//		mPassword = "wangwang";
-//		
-		
-//		mEmail = "cse11test2@gmail.com.";
-//		mPassword = "cse11test1";
-////		
-		
 		
 		boolean cancel = false;
 		View focusView = null;
